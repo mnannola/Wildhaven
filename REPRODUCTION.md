@@ -40,7 +40,7 @@ Pending litters reserve capacity when conceived. If manual additions or a lowere
 
 ## Saves and validation
 
-Save format 7 persists pregnancies, courtship progress, recovery times, parent/caregiver links, father trait snapshots, birth totals, birth limits, and juvenile carcass capacity. Formats 1–6 remain loadable. Existing lifecycle data from format 6 is retained; older formats still receive the first-pass adult migration. No past births are invented. Invalid family or birth-limit values in new saves are rejected.
+Save format 8 retains the family data introduced in format 7 and adds terrain pursuit navigation (see TERRAIN.md). It persists pregnancies, courtship progress, recovery times, parent/caregiver links, father trait snapshots, birth totals, birth limits, and juvenile carcass capacity. Formats 1–7 remain loadable. Existing lifecycle data from format 6 is retained; older formats still receive the first-pass adult migration. No past births are invented. Invalid family or birth-limit values in new saves are rejected.
 
 Tests cover ordinary courtship/conception for all species, deterministic continuation during courtship/pregnancy/nursing, inheritance, restrictions, threats, sight/route limits, reserved capacity and blocked deliveries, nursing costs, following/waiting, orphan survival decisions, weaning, juvenile combat exclusions, juvenile carcasses, old-save migration, and inspector/statistics output.
 
@@ -53,7 +53,7 @@ Two unmodified-terrain reserves were run for 1,200 simulated seconds with natura
 
 The mixed run lost eleven deer to predation and two to thirst; the deer-only run had no deaths. Of 28 mixed-reserve offspring, 26 were alive at the end; all 23 deer-only offspring survived. None of the living dependents were orphaned. These runs validate normal family behavior over multiple weaning periods, not a stable long-term equilibrium. The mixed bears did not reproduce in this sample; focused behavior tests exercise bear reproduction. No resources or animals were replenished by the test harness after initialization.
 
-All 95 tests and the production build pass. The renderer preparation harness also checks family animation selection for all species, antlerless variants, facing, pause behavior, frame progression, and survival-action priority, alongside its texture and terrain-cache checks. Actual browser frame rate was not measured for this pass.
+All 106 tests and the production build pass, including the subsequent terrain-aware movement checks. The renderer preparation harness also checks family animation selection for all species, antlerless variants, facing, pause behavior, frame progression, and survival-action priority, alongside its texture and terrain-cache checks. Actual browser frame rate was not measured for this pass.
 
 Reports: `balance-results/reproduction-mixed-4721.json` and `balance-results/reproduction-herbivores-44.json`.
 

@@ -46,6 +46,6 @@ npm run balance -- herbivores 4721 1200 review
 npm run balance -- crowded 4721 1200 review
 ```
 
-Reports are written to `balance-results/`. The `baseline-*` files record the original runs, and `validated-*` files record the final tuning. Other reports document diagnostic iterations. Simulation durations and populations are explicit in each report; elapsed wall-clock time is not a rendering FPS benchmark.
+Reports are written to `balance-results/`, which is ignored by Git. Historical local `baseline-*` reports recorded the original runs, and `validated-*` reports recorded the final tuning summarized above. Raw reports are generated artifacts and are not distributed with the source. Simulation durations and populations are explicit in each report; elapsed wall-clock time is not a rendering FPS benchmark.
 
 These reports predate reproduction. They establish a healthier short-to-medium observation window rather than an indefinite equilibrium. Reproduction is now implemented; see REPRODUCTION.md for subsequent family-behavior runs and their limits.

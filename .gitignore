@@ -24,7 +24,9 @@ test-results/
 playwright-report/
 blob-report/
 
-# Keep balance-results/ and performance-results/: documented benchmark baselines.
+# Generated balance and performance reports (keep the harnesses in scripts/)
+/balance-results/
+/performance-results/
 
 # Editor and operating-system files
 .vscode/

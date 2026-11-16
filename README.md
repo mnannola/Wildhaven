@@ -2,7 +2,7 @@
 
 Browser ecosystem sandbox built with Phaser 3, TypeScript, React, and Vite.
 
-Aging is implemented: animals advance through juvenile, adult, and elder stages, with varied adult starting ages, gradual elder movement/stamina decline, and natural deaths. The inspector shows sex, age, and stage; World activity separates old-age deaths. Save format 7 upgrades older worlds. See LIFECYCLE.md for aging settings and REPRODUCTION.md for mating, pregnancy, inherited traits, dependent young, and population controls.
+Aging is implemented: animals advance through juvenile, adult, and elder stages, with varied adult starting ages, gradual elder movement/stamina decline, and natural deaths. The inspector shows sex, age, and stage; World activity separates old-age deaths. Save format 8 upgrades older worlds. See LIFECYCLE.md for aging settings and REPRODUCTION.md for mating, pregnancy, inherited traits, dependent young, and population controls.
 
 ## Run
 
@@ -12,6 +12,8 @@ Aging is implemented: animals advance through juvenile, adult, and elder stages,
 
 Drag to pan; scroll or use + / − to zoom. Click an animal to inspect it. Click Deer or Wolf to immediately add one animal near the center of the current view. The arrow returns to selection. Use ◎ for paths and detection radius. Pause / 1× / 2× / 5× control simulation speed. Saves persist in IndexedDB in the current browser; use Load to restore. Closing the page stops the simulation.
 
+Terrain-aware movement and hunting: see TERRAIN.md for woodland concealment, footing, weighted routes, river pursuits, and save compatibility. The inspector shows surroundings, cover, and movement modifiers.
+
 ## Architecture
 
 - `src/sim.ts`: seeded, engine-independent state and fixed-step simulation, utility goal selection, short action sequences, grid navigation, resources, predation, personality.
@@ -19,7 +21,7 @@ Drag to pan; scroll or use + / − to zoom. Click an animal to inspect it. Click
 - `src/main.tsx`: React journal, inspector, controls.
 - `src/storage.ts`: IndexedDB persistence.
 
-Prototype limitations: Animals use short goal-specific action plans. Animals perceive nearby resources and animals with tree-blocked sight, remember discoveries, and forget them over time. Navigation uses breadth-first grid paths. Nearby animals are currently scanned directly. Species sprites are programmatically drawn pixel art. Reproduction and dependent young are implemented. No seasons or terrain editor. Simulation CPU performance has been measured at 50, 100, and 200 animals; see PERFORMANCE.md for results and browser-rendering limits. Simulated day counter advances every 240 seconds and is not yet a biological day/night cycle.
+Prototype limitations: Animals use short goal-specific action plans. Animals perceive nearby resources and animals with tree-blocked sight, remember discoveries, and forget them over time. Navigation uses terrain-weighted A*; hunting and escape routes respect cover, obstacles, and river fords. Nearby animals are currently scanned directly. Species sprites are programmatically drawn pixel art. Reproduction and dependent young are implemented. No seasons or terrain editor. Simulation CPU performance has been measured at 50, 100, and 200 animals; see PERFORMANCE.md for results and browser-rendering limits. Simulated day counter advances every 240 seconds and is not yet a biological day/night cycle.
 
 New reserves start empty. Click a species button to add one animal near the center of the current view and select it in the inspector. Sprinting hunters and fleeing deer move faster, use running animations, and accumulate fatigue faster. Delete animal removes the selected animal. Reset animals clears all animals (including carcasses) and activity while keeping terrain, resources, and simulation time. Existing saves retain their animals.
 

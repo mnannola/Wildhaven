@@ -1,6 +1,6 @@
 # Performance at 50, 100, and 200 animals
 
-Measured on this Windows host with Node v22.20.0. These are CPU timings, not a promise of browser frame rate. Raw measurements are in `performance-results/`.
+Measured on this Windows host with Node v22.20.0. These are CPU timings, not a promise of browser frame rate. Raw measurements are generated locally in `performance-results/`, which is ignored by Git and is not distributed with the source. The tables below retain the historical results.
 
 ## Simulation results
 
@@ -50,4 +50,4 @@ npm test
 npm run build
 ```
 
-`perf:browser` needs a Chromium executable (set `PERF_BROWSER` if needed) and free local ports 5189 and 9287. It launches a temporary development server and an isolated headless browser profile. Reports are written as JSON under `performance-results/`. Keep the original `baseline-clean.json` to retain the behavior comparison.
+`perf:browser` needs a Chromium executable (set `PERF_BROWSER` if needed) and free local ports 5189 and 9287. It launches a temporary development server and an isolated headless browser profile. Reports are written as JSON under `performance-results/`. The simulation benchmark runs without a baseline. To enable optional local behavior comparisons, run `npm run perf:sim -- baseline-clean` before changing simulation code, then run `npm run perf:sim -- trial` afterward. Preserve that local baseline between runs; generating it again replaces the comparison reference.
