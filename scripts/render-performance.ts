@@ -21,13 +21,13 @@ const module={exports:{} as any},context=vm.createContext({__phaser:{Scene:class
 const run=vm.runInContext('(function(require,module,exports){'+code+'\n})',context);run(createRequire(resolve('src/game.ts')),module,module.exports);
 const {Habitat,bridge}=module.exports,results=[];
 for(const count of [50,100,200]){
- const scene=new Habitat();scene.terrain=display();scene.marks=display();scene.fishGraphics=display();scene.activityGraphics=display();scene.effectGraphics=display();scene.cameras={main:{centerOn(){}}};scene.game={loop:{actualFps:60}};scene.make={graphics:()=>display('',true)};for(const method of ['makeTextures','makeMovementTextures','makeSurvivalTextures','makeAwarenessTextures','makeFishingCombatTextures','makeDeathTextures','makeSleepingDeerTexture','makeSleepingPredatorTextures','makeAntlerlessTextures','makeFamilyTextures'])scene[method]();scene.add={image:(_x:number,_y:number,key:string)=>display(key),text:()=>display()};
+ const scene=new Habitat();scene.homeGraphics=display();scene.terrain=display();scene.marks=display();scene.fishGraphics=display();scene.activityGraphics=display();scene.effectGraphics=display();scene.cameras={main:{centerOn(){}}};scene.game={loop:{actualFps:60}};scene.make={graphics:()=>display('',true)};for(const method of ['makeTextures','makeMovementTextures','makeSurvivalTextures','makeAwarenessTextures','makeFishingCombatTextures','makeDeathTextures','makeSleepingDeerTexture','makeSleepingPredatorTextures','makeAntlerlessTextures','makeFamilyTextures'])scene[method]();scene.add={image:(_x:number,_y:number,key:string)=>display(key),text:()=>display()};
  const w=new World(4721);for(let i=0;i<count;i++)w.spawn(i<count*.85?'deer':i<count*.95?'wolf':'bear',2+w.random()*(W-4),2+w.random()*(H-4));for(let i=0;i<20;i++)w.step(.1);
  bridge.world=w;bridge.speed=0;bridge.selected=0;bridge.selectedRiver=0;
  scene.update(0,16.67);for(const key of Object.keys(calls))delete calls[key];
  const times=[];for(let i=0;i<300;i++){if(mode==='moving'&&i%6===0)w.step(.1);const began=performance.now();scene.update(i*16.67,16.67);times.push(performance.now()-began);}
  const sorted=[...times].sort((a,b)=>a-b),result={count,mode,frames:300,meanMs:times.reduce((n,v)=>n+v,0)/times.length,p95Ms:sorted[Math.floor(sorted.length*.95)],displayCalls:{...calls}};if(typeof scene.terrainChanged==='function'){const cell=w.cells.find(c=>c.kind==='grass'&&c.forage)!;cell.food=80;scene.paint();assert.equal(scene.terrainChanged(),false);cell.food=79;assert.equal(scene.terrainChanged(),false);cell.food=40;assert.equal(scene.terrainChanged(),true);scene.paint();cell.food=12;assert.equal(scene.terrainChanged(),true);scene.paint();cell.kind='tree';assert.equal(scene.terrainChanged(),true);}
- verifyAppearance(scene,w);verifyFamilyAnimations(scene);results.push(result);console.log(JSON.stringify(result));
+ verifyAppearance(scene,w);verifyFamilyAnimations(scene);verifyHomes(scene);results.push(result);console.log(JSON.stringify(result));
 }
 mkdirSync('performance-results',{recursive:true});writeFileSync(`performance-results/render-${label}-${mode}.json`,JSON.stringify({label,scope:'Actual Habitat.update with instrumented display objects; no GPU/DOM/paint timing. Mode is paused or moving at 10 simulation steps/60 prepared frames. Simulation work is excluded from timed scene updates; animation texture keys are validated.',results},null,2)+'\n');
 
@@ -75,4 +75,18 @@ function verifyFamilyAnimations(scene:any){
   child.x=mother.x-1;child.action='Resting near mother';child.plan={goal:'Family',steps:[{kind:'care',label:'Rest'}],index:0,elapsed:0};mother.action='Wandering';mother.plan=undefined;
   scene.update(0,16.67);assert.ok(actor.texture.key.startsWith(species+'-family-rest-'));
  }
+}
+
+function verifyHomes(scene:any){
+ const w=new World(8);bridge.world=w;bridge.selected=0;bridge.selectedRiver=0;bridge.selectedHome=0;bridge.overlay=false;
+ const a=w.spawn('wolf',20,20)!,home={id:1,species:'wolf' as const,kind:'wolf-den' as const,groupId:a.id,ownerId:a.id,radius:12,x:a.x,y:a.y,foundedAt:0,lastUsedAt:0};w.homes=[home];w.nextHomeId=2;a.homeId=1;
+ const g=display();let clears=0;g.clear=()=>{clears++;return g;};scene.homeGraphics=g;scene.drawHomes();scene.drawHomes();assert.equal(clears,1);
+ bridge.selectedHome=1;bridge.overlay=true;const circles=calls.strokeCircle??0;scene.update(0,16.67);assert.ok((calls.strokeCircle??0)>circles);
+ scene.viewHome(1);assert.equal(bridge.selectedHome,1);assert.equal(bridge.selected,0);
+ bridge.selectedHome=0;bridge.overlay=false;
+ a.action='Marking territory';a.path=[];scene.update(0,16.67);assert.ok(scene.actors.get(a.id).texture.key.startsWith('wolf-sniff-idle-'));
+ a.action='Guarding territory';scene.update(0,16.67);assert.ok(scene.actors.get(a.id).texture.key.startsWith('wolf-alert-idle-'));
+ a.action='Wandering';a.x=home.x+4;a.y=home.y;
+ const pup=w.spawn('wolf',home.x,home.y)!;pup.age=0;pup.homeId=home.id;pup.caregiverId=a.id;pup.action='Resting at den';pup.plan={goal:'Family',steps:[{kind:'care',label:'Rest at den'}],index:0,elapsed:0};
+ scene.update(0,16.67);assert.ok(scene.actors.get(pup.id).texture.key.startsWith('wolf-family-rest-'));
 }

@@ -64,6 +64,11 @@ export function familyDecision(w:World,a:Animal):boolean{
   }
   const mother=w.animals.find(b=>b.id===a.caregiverId&&b.alive&&b.species===a.species);
   if(!mother||a.fatigue>85||!isDependent(a)&&(a.hunger>45||a.thirst>45)){if(a.goal==='Family')w.cancelPlan(a,'Caregiver unavailable or independent needs take priority.');return false;}
+  const den=a.species==='wolf'&&isDependent(a)?w.homes.find(h=>h.id===a.homeId&&h.abandonedAt===undefined):undefined;
+  if(den&&distance(mother,den)>3&&a.hunger<75&&a.thirst<75){
+   if(distance(a,den)>1.5){const path=w.route(a,den);if(path.length){w.setGoal(a,'Family','Returning to den','Returning to familiar shelter while mother forages.',den);a.path=path;return true;}}
+   else{a.goal='Family';a.action='Resting at den';a.reason='Waiting at the pack den while mother forages.';a.path=[];a.plan={goal:'Family',steps:[{kind:'care',label:'Rest at den'}],index:0,elapsed:0};return true;}
+  }
   const seen=w.canSee(a,mother),last=a.memory.find(m=>m.id===mother.id&&w.time-m.seen<30),destination=seen?mother:last;
   if(!destination){if(a.goal==='Family')w.cancelPlan(a,'Caregiver is out of sight; searching independently.');return false;}
   if(distance(a,destination)>1.2){
@@ -82,7 +87,7 @@ export function familyDecision(w:World,a:Animal):boolean{
  }
  // Mothers pause ordinary travel when a visible dependent falls behind.
  if(a.hunger<60&&a.thirst<60&&a.fatigue<80&&(!a.plan||['Family','Explore','Socialize','Mate'].includes(a.goal))){
-  const child=dependents(w,a).find(b=>distance(a,b)>2.5&&w.canSee(a,b));
+  const child=dependents(w,a).find(b=>{const den=a.species==='wolf'?w.homes.find(h=>h.id===b.homeId&&h.id===a.homeId&&h.abandonedAt===undefined):undefined;return !(den&&distance(b,den)<2.5&&distance(a,den)>3)&&distance(a,b)>2.5&&w.canSee(a,b);});
   if(child){a.goal='Family';a.action='Waiting for young';a.reason='Letting dependent young catch up.';a.path=[];a.plan={goal:'Family',steps:[{kind:'care',label:'Wait for young'}],index:0,elapsed:0};return true;}
  }
  if(a.goal==='Family'&&a.plan){w.cancelPlan(a,'Family is together; resuming survival.');}
@@ -123,7 +128,7 @@ export function advanceFamilyPlan(w:World,a:Animal,dt:number):boolean{
   return true;
  }
  if(step.kind==='care'){
-  if(a.action==='Resting near mother')a.fatigue=clamp(a.fatigue-dt*2);
+  if(a.action==='Resting near mother'||a.action==='Resting at den')a.fatigue=clamp(a.fatigue-dt*2);
   return true;
  }
  const mother=w.animals.find(b=>b.id===a.caregiverId&&b.alive);
@@ -148,7 +153,7 @@ export function updateFamilies(w:World){
    const place=w.walkable(spot.x,spot.y)&&w.route(mother,spot).length?spot:mother;
    const child=w.spawn(mother.species,place.x,place.y,true);if(!child)break;
    child.age=0;child.hunger=25;child.thirst=20;child.fatigue=5;
-   child.parentIds=[mother.id,pregnancy.fatherId];child.parentNames=[mother.name,pregnancy.fatherName];child.caregiverId=mother.id;
+   child.parentIds=[mother.id,pregnancy.fatherId];child.parentNames=[mother.name,pregnancy.fatherName];child.caregiverId=mother.id;child.homeId=mother.homeId;child.knownHomeIds=mother.homeId===undefined?[]:[mother.homeId];
    if(child.species==='deer')child.herdId=mother.herdId??mother.id;
    if(child.species==='wolf')child.packId=mother.packId??mother.id;
    for(const key of Object.keys(child.traits) as (keyof Traits)[])child.traits[key]=clamp((mother.traits[key]+pregnancy.fatherTraits[key])/2+(w.random()-.5)*16);

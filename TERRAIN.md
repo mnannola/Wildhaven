@@ -1,6 +1,6 @@
 # Terrain-aware movement and hunting
 
-This is the first part of giving animals a relationship with places: cover, crossings, and routes. It uses the existing landscape, including older saved worlds. Territories and dens are the next layer.
+This is the first part of giving animals a relationship with places: cover, crossings, and routes. It uses the existing landscape, including older saved worlds. Territories and dens now build on this layer; see HOMES.md.
 
 ## Terrain rules
 

@@ -40,7 +40,7 @@ Pending litters reserve capacity when conceived. If manual additions or a lowere
 
 ## Saves and validation
 
-Save format 8 retains the family data introduced in format 7 and adds terrain pursuit navigation (see TERRAIN.md). It persists pregnancies, courtship progress, recovery times, parent/caregiver links, father trait snapshots, birth totals, birth limits, and juvenile carcass capacity. Formats 1–7 remain loadable. Existing lifecycle data from format 6 is retained; older formats still receive the first-pass adult migration. No past births are invented. Invalid family or birth-limit values in new saves are rejected.
+Save format 9 retains the family data introduced in format 7, terrain pursuit navigation from format 8 (see TERRAIN.md), and home sites and behavior (see HOMES.md). It persists pregnancies, courtship progress, recovery times, parent/caregiver links, father trait snapshots, birth totals, birth limits, and juvenile carcass capacity. Formats 1–8 remain loadable. Existing lifecycle data from format 6 is retained; older formats still receive the first-pass adult migration. No past births are invented. Invalid family or birth-limit values in new saves are rejected.
 
 Tests cover ordinary courtship/conception for all species, deterministic continuation during courtship/pregnancy/nursing, inheritance, restrictions, threats, sight/route limits, reserved capacity and blocked deliveries, nursing costs, following/waiting, orphan survival decisions, weaning, juvenile combat exclusions, juvenile carcasses, old-save migration, and inspector/statistics output.
 

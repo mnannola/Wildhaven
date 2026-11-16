@@ -2,7 +2,7 @@
 
 Browser ecosystem sandbox built with Phaser 3, TypeScript, React, and Vite.
 
-Aging is implemented: animals advance through juvenile, adult, and elder stages, with varied adult starting ages, gradual elder movement/stamina decline, and natural deaths. The inspector shows sex, age, and stage; World activity separates old-age deaths. Save format 8 upgrades older worlds. See LIFECYCLE.md for aging settings and REPRODUCTION.md for mating, pregnancy, inherited traits, dependent young, and population controls.
+Aging is implemented: animals advance through juvenile, adult, and elder stages, with varied adult starting ages, gradual elder movement/stamina decline, and natural deaths. The inspector shows sex, age, and stage; World activity separates old-age deaths. Save format 9 upgrades older worlds. See LIFECYCLE.md for aging settings and REPRODUCTION.md for mating, pregnancy, inherited traits, dependent young, and population controls.
 
 ## Run
 
@@ -14,9 +14,12 @@ Drag to pan; scroll or use + / − to zoom. Click an animal to inspect it. Click
 
 Terrain-aware movement and hunting: see TERRAIN.md for woodland concealment, footing, weighted routes, river pursuits, and save compatibility. The inspector shows surroundings, cover, and movement modifiers.
 
+Territories and dens: see HOMES.md for pack dens, bear home ranges, herd gathering sites, ownership, den pups, map controls, and save support.
+
 ## Architecture
 
 - `src/sim.ts`: seeded, engine-independent state and fixed-step simulation, utility goal selection, short action sequences, grid navigation, resources, predation, personality.
+- `src/homes.ts`: familiar sites, ownership, territorial warnings, home routines, and knowledge sharing.
 - `src/game.ts`: Phaser camera, pixel rendering, interaction, and simulation bridge.
 - `src/main.tsx`: React journal, inspector, controls.
 - `src/storage.ts`: IndexedDB persistence.

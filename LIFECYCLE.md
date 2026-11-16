@@ -1,6 +1,6 @@
 # Aging: first life-cycle pass
 
-This document records the aging implementation. Reproduction and dependent young are now implemented in save format 8 (family data was introduced in format 7); see REPRODUCTION.md for current family behavior, growth, carcasses, and validation.
+This document records the aging implementation. Reproduction and dependent young are now implemented in save format 9 (family data was introduced in format 7); see REPRODUCTION.md for current family behavior, growth, carcasses, and validation.
 
 Animals now have sex, age, a derived life stage, and an individual natural lifespan. Ages are measured in simulated seconds; one displayed simulated day is 240 seconds (four minutes at 1x). Pause, speed controls, and saves use the same simulation clock. These are compressed gameplay ages, not real animal lifespans.
 
@@ -32,4 +32,4 @@ Validation completed with 73 passing tests and a successful production build. Th
 
 The second pass now adds mating, pregnancy, births, inherited traits, caregivers, and population controls. The third adds further growth/elder visuals and long-run reproduction balance. Dead animals are not automatically replaced.
 
-Performance reports in `PERFORMANCE.md` predate aging. Their serialized format-5 hashes are historical; the performance script now reports the current save version (8 after terrain-aware navigation) and skips comparisons across different save versions.
+Performance reports in `PERFORMANCE.md` predate aging. Their serialized format-5 hashes are historical; the performance script now reports the current save version (9 after territories and dens) and skips comparisons across different save versions.

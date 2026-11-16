@@ -33,6 +33,9 @@ export function familyVisuals(w:World,time:number):Map<number,FamilyVisual>{
    const mother=byId.get(a.caregiverId??0);
    if(mother?.alive&&distance(a,mother)<=1.4&&w.clearLine(a,mother))visuals.set(a.id,{action:'rest',frame:Math.floor(time*2+a.id*.17)%8,focus:mother});
   }
+  if(a.action==='Resting at den'&&step==='care'&&lifeStage(a)==='juvenile'){
+   const den=w.homes.find(h=>h.id===a.homeId&&h.abandonedAt===undefined);if(den&&distance(a,den)<=1.5)visuals.set(a.id,{action:'rest',frame:Math.floor(time*2+a.id*.17)%8,focus:den});
+  }
  }
  for(const a of w.animals){
   if(!a.alive||a.path.length||a.action!=='Waiting for young'||a.plan?.steps[a.plan.index]?.kind!=='care'||visuals.has(a.id))continue;
