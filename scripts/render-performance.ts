@@ -233,6 +233,23 @@ function verifyAppearance(scene: any, w: World) {
   assert.equal(sprite.texture.key, 'deer-sleep-fawn-antlerless');
   deer.sex = 'female';
   deer.age = LIFE_CYCLE.deer.adult;
+  deer.action = 'Wandering';
+  deer.reason = 'Resting';
+  deer.path = [];
+  scene.update(0, 16.67);
+  assert.ok(sprite.texture.key.startsWith('deer-idle-'));
+  const idleTexture = sprite.texture.key,
+    idleTime = w.time;
+  scene.update(10000, 500);
+  assert.equal(sprite.texture.key, idleTexture, 'Paused idle must freeze');
+  w.time += 0.4;
+  scene.update(0, 16.67);
+  assert.notEqual(
+    sprite.texture.key,
+    idleTexture,
+    'Idle follows simulation time',
+  );
+  w.time = idleTime;
   for (const action of [
     'Wandering',
     'Fleeing',
@@ -274,6 +291,31 @@ function verifyAppearance(scene: any, w: World) {
     scene.update(0, 16.67);
     const actor = scene.actors.get(a.id),
       femaleWidth = actor.scaleX;
+    assert.ok(actor.texture.key.startsWith(species + '-idle-'));
+    const idlePose = actor.texture.key,
+      idleTime = w.time;
+    scene.update(10000, 500);
+    assert.equal(
+      actor.texture.key,
+      idlePose,
+      'Paused predator idle must freeze',
+    );
+    w.time += 0.6;
+    scene.update(0, 16.67);
+    assert.notEqual(actor.texture.key, idlePose);
+    w.time = idleTime;
+    a.action = 'Fleeing';
+    a.path = [{ x: a.x + 0.5, y: a.y }];
+    actor.setData('gaitPhase', (15.1 / 16) * Math.PI * 2);
+    scene.update(0, 16.67);
+    assert.equal(
+      actor.texture.key,
+      species + '-run-15',
+      'Predator must select the expanded gait frames',
+    );
+    a.path = [];
+    a.action = 'Wandering';
+    scene.update(0, 16.67);
     assert.equal(actor.isTinted, false);
     a.sex = 'male';
     scene.update(0, 16.67);

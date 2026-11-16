@@ -7,7 +7,7 @@
     "format:check": "prettier --check .",
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
-    "test": "tsx --test src/sim.test.ts src/lifecycle.test.ts src/reproduction.test.ts src/familyAnimations.test.ts src/terrain.test.ts src/homes.test.ts src/woodlandRendering.test.ts",
+    "test": "tsx --test src/sim.test.ts src/lifecycle.test.ts src/reproduction.test.ts src/familyAnimations.test.ts src/terrain.test.ts src/homes.test.ts src/woodlandRendering.test.ts src/riverRendering.test.ts",
     "balance": "tsx scripts/balance.ts",
     "perf:sim": "tsx scripts/performance.ts",
     "perf:render": "tsx scripts/render-performance.ts",

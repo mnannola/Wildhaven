@@ -20,6 +20,9 @@ test('woodland scenery preserves world state, caches ground, restores tree trans
     },
   );
   const graphics: any = {
+    strokeEllipse() {
+      return this;
+    },
     clear() {
       waterClears++;
       return this;

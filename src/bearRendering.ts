@@ -4,8 +4,13 @@ export const BEAR_TEXTURE_SCALE = 3;
 export const bearPoses = [
   'bear',
   'bear-sleep',
+  ...Array.from({ length: 16 }, (_, i) => `bear-idle-${i}`),
   ...['walk', 'run', 'sniff', 'search', 'attack', 'fish', 'catch'].flatMap(
-    (a) => Array.from({ length: 8 }, (_, i) => `bear-${a}-${i}`),
+    (a) =>
+      Array.from(
+        { length: ['walk', 'run', 'sniff', 'search'].includes(a) ? 16 : 8 },
+        (_, i) => `bear-${a}-${i}`,
+      ),
   ),
   ...['alert', 'sniff', 'search'].flatMap((a) =>
     Array.from({ length: 8 }, (_, i) => `bear-${a}-idle-${i}`),
@@ -35,7 +40,13 @@ export function makeBearTextures(scene: {
       if (scene.textures?.exists(key)) scene.textures.remove(key);
       const g = detailedGraphics(scene.make.graphics({ x: 0, y: 0 })),
         frame = Number(pose.match(/-(\d+)$/)?.[1] ?? 0),
-        phase = (frame / 8) * Math.PI * 2;
+        phase =
+          (frame /
+            (/bear-(walk|run|sniff|search)-\d|bear-idle-/.test(pose)
+              ? 16
+              : 8)) *
+          Math.PI *
+          2;
       const sleep = pose === 'bear-sleep',
         rest = sleep || pose.includes('family-rest'),
         dead = pose.includes('carcass'),
@@ -49,10 +60,20 @@ export function makeBearTextures(scene: {
         fishing = pose.includes('-fish-'),
         caught = pose.includes('-catch-'),
         raised = pose.includes('alert') || pose.includes('wait');
+      const idle = pose.includes('bear-idle-'),
+        shoulder = moving
+          ? Math.sin(phase + 0.5) * (run ? 1 : 0.65)
+          : idle
+            ? Math.sin(phase) * 0.18
+            : 0;
       const by = rest
           ? 23
           : 17 +
-            (moving ? Math.sin(phase * 2) * (run ? 0.8 : 0.3) : 0) +
+            (moving
+              ? Math.sin(phase * 2) * (run ? 1 : 0.45)
+              : idle
+                ? Math.sin(phase) * 0.18
+                : 0) +
             drop * 6,
         fur = cub ? 0x765237 : 0x89623f,
         dark = 0x4a3628,
@@ -82,13 +103,29 @@ export function makeBearTextures(scene: {
       };
       const leg = (hip: number, front: boolean, near: boolean) => {
         const a =
-            phase + (front ? 0 : Math.PI) + (near ? 0 : run ? 0.6 : Math.PI),
-          swing = moving ? Math.sin(a) * (run ? 4 : 2) : 0,
-          lift = moving ? Math.max(0, Math.cos(a)) * (run ? 3.5 : 1) : 0;
+            phase +
+            (front ? 0 : run ? 2.2 : Math.PI * 0.65) +
+            (near ? 0 : run ? 0.6 : Math.PI),
+          cycle = (((a / (Math.PI * 2)) % 1) + 1) % 1,
+          stance = cycle < 0.72,
+          swing = moving
+            ? run
+              ? Math.sin(a) * 4.8
+              : stance
+                ? 2.6 - (cycle / 0.72) * 5.2
+                : -2.6 + ((cycle - 0.72) / 0.28) * 5.2
+            : 0,
+          lift = moving
+            ? run
+              ? Math.max(0, Math.cos(a)) * 3.8
+              : stance
+                ? 0
+                : Math.sin(((cycle - 0.72) / 0.28) * Math.PI) * 2
+            : 0;
         line(
           [
             [hip, by + 2],
-            [hip + swing * 0.4, 26],
+            [hip + swing * 0.4, 26 - lift * 0.35],
             [hip + swing, 30 - lift],
           ],
           near ? fur : dark,
@@ -126,7 +163,7 @@ export function makeBearTextures(scene: {
         // Grizzlies carry a pronounced muscular shoulder; cubs are rounder and lower.
         g.fillStyle(fur).fillEllipse(
           27,
-          by - (cub ? 1.5 : 3),
+          by - (cub ? 1.5 : 3) + shoulder,
           cub ? 15 : 17,
           cub ? 14 : 16,
         );
@@ -173,7 +210,7 @@ export function makeBearTextures(scene: {
                   ? 11
                   : caught
                     ? 18
-                    : 16;
+                    : 16 + shoulder * 0.5;
         line(
           [
             [30, by],
@@ -238,20 +275,14 @@ export function makeBearTextures(scene: {
                 : 30
               : caught
                 ? 35
-                : frame >= 4 && frame <= 6
-                  ? 40
-                  : 29,
+                : [29, 29, 30, 33, 38, 40, 36, 30][frame],
             py = attack
               ? strike
                 ? 20
                 : 14
               : caught
                 ? 28
-                : frame >= 4 && frame <= 6
-                  ? 31
-                  : frame >= 2
-                    ? 17
-                    : 29;
+                : [29, 26, 20, 16, 23, 31, 31, 29][frame];
           line(
             [
               [28, by + 1],

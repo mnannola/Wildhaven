@@ -1,3 +1,4 @@
+import { waterRings, waterSplash } from './riverRendering';
 import { makeBearTextures, BEAR_TEXTURE_SCALE } from './bearRendering';
 import { makeWolfTextures, WOLF_TEXTURE_SCALE } from './wolfRendering';
 import { makeDeerTextures, DEER_TEXTURE_SCALE } from './deerRendering';
@@ -523,12 +524,7 @@ export class Habitat extends Phaser.Scene {
       if (water) {
         const x = (a.x + (water.x - a.x) * 0.75) * TILE,
           y = (a.y + (water.y - a.y) * 0.75) * TILE;
-        g.lineStyle(1, 0xaed9d1, (1 - phase) * 0.6).strokeEllipse(
-          x,
-          y,
-          5 + phase * 16,
-          2 + phase * 7,
-        );
+        waterRings(g, x, y, phase);
       }
     } else if (phase < 0.45) {
       const x = a.x * TILE + facing * (a.species === 'bear' ? 15 : 13),
@@ -806,13 +802,7 @@ export class Habitat extends Phaser.Scene {
         );
         if (progress > 0.55 && progress < 0.85) {
           const t = (progress - 0.55) / 0.3;
-          for (let i = 0; i < 5; i++)
-            g.fillStyle(0xb8e3de, (1 - t) * 0.8).fillRect(
-              x + (i - 2) * 4 * t,
-              y - Math.sin(t * Math.PI) * 7 + (i % 2) * 3,
-              2,
-              2,
-            );
+          waterSplash(g, x, y, t);
         }
       }
     }
@@ -830,6 +820,7 @@ export class Habitat extends Phaser.Scene {
           8 + t * 23,
           4 + t * 9,
         );
+        waterSplash(g, x, y, t);
         if (t < 0.55) {
           const fx = x + (a.x * TILE - x) * t,
             fy = y - Math.sin((t / 0.55) * Math.PI) * 12;
@@ -1164,8 +1155,10 @@ export class Habitat extends Phaser.Scene {
         ),
         sprinting = isSprinting(a),
         moving = a.alive && a.path.length > 0 && a.action !== 'Sleeping',
-        bob = moving ? Math.sin(phase * 2) * (sprinting ? 1.5 : 0.4) : 0;
-      const gaitFrame = Math.floor((phase / (Math.PI * 2)) * 8) % 8,
+        bob = 0;
+      const gaitFrames = 16,
+        gaitFrame =
+          Math.floor((phase / (Math.PI * 2)) * gaitFrames) % gaitFrames,
         activity =
           a.alive && !moving
             ? a.action === 'Grazing' && a.species === 'deer'
@@ -1303,7 +1296,13 @@ export class Habitat extends Phaser.Scene {
                           awareness +
                           '-idle-' +
                           awarenessFrame
-                        : a.species;
+                        : a.species +
+                          '-idle-' +
+                          Math.floor(
+                            (visualTime * (a.species === 'bear' ? 2 : 3) +
+                              a.id * 1.7) %
+                              16,
+                          );
       const textureKey = animalTexture(a, poseKey),
         build = sexBuild(a),
         size =

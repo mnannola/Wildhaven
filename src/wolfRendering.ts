@@ -4,8 +4,9 @@ export const WOLF_TEXTURE_SCALE = 3;
 export const wolfPoses = [
   'wolf',
   'wolf-sleep',
+  ...Array.from({ length: 16 }, (_, i) => `wolf-idle-${i}`),
   ...['walk', 'run', 'sniff', 'search', 'attack'].flatMap((a) =>
-    Array.from({ length: 8 }, (_, i) => `wolf-${a}-${i}`),
+    Array.from({ length: a === 'attack' ? 8 : 16 }, (_, i) => `wolf-${a}-${i}`),
   ),
   ...['alert', 'sniff', 'search'].flatMap((a) =>
     Array.from({ length: 8 }, (_, i) => `wolf-${a}-idle-${i}`),
@@ -35,7 +36,13 @@ export function makeWolfTextures(scene: {
       if (scene.textures?.exists(key)) scene.textures.remove(key);
       const g = detailedGraphics(scene.make.graphics({ x: 0, y: 0 })),
         frame = Number(pose.match(/-(\d+)$/)?.[1] ?? 0),
-        phase = (frame / 8) * Math.PI * 2;
+        phase =
+          (frame /
+            (/wolf-(walk|run|sniff|search)-\d|wolf-idle-/.test(pose)
+              ? 16
+              : 8)) *
+          Math.PI *
+          2;
       const sleep = pose === 'wolf-sleep',
         rest = sleep || pose.includes('family-rest'),
         dead = pose.includes('carcass'),
@@ -49,10 +56,23 @@ export function makeWolfTextures(scene: {
         nurse = pose.includes('family-nurse-'),
         court = pose.includes('family-court'),
         alert = pose.includes('alert') || pose.includes('wait');
+      const idle = pose.includes('wolf-idle-'),
+        airborne = run ? Math.max(0, Math.sin(phase)) * 0.9 : 0,
+        tailSwing = moving
+          ? Math.sin(phase + (run ? 0.8 : 0)) * (run ? 2 : 1)
+          : idle
+            ? Math.sin(phase) * 1.5
+            : 0;
       const by = rest
           ? 22
           : 16 +
-            (moving ? Math.sin(phase * 2) * (run ? 0.7 : 0.2) : 0) +
+            (moving
+              ? run
+                ? -airborne
+                : Math.sin(phase * 2) * 0.3
+              : idle
+                ? Math.sin(phase) * 0.15
+                : 0) +
             drop * 6,
         fur = pup ? 0x827a68 : 0x8b8d7b,
         dark = 0x474e48,
@@ -70,22 +90,42 @@ export function makeWolfTextures(scene: {
       g.fillStyle(0x1c3025, 0.2).fillEllipse(18, 29, 31, 6);
       const leg = (hip: number, front: boolean, near: boolean) => {
         const a =
-            phase + (front ? 0 : Math.PI) + (near ? 0 : run ? 0.8 : Math.PI),
-          swing = moving ? Math.sin(a) * (run ? 5 : 2.5) : 0,
-          lift = moving ? Math.max(0, Math.cos(a)) * (run ? 4 : 1.5) : 0,
-          knee = hip + (front ? -1 : 2) + swing * 0.35,
+            phase +
+            (front ? 0 : run ? 2 : Math.PI) +
+            (near ? 0 : run ? 0.55 : Math.PI / 2),
+          cycle = (((a / (Math.PI * 2)) % 1) + 1) % 1,
+          stance = cycle < 0.62,
+          swing = moving
+            ? run
+              ? Math.sin(a) * 6
+              : stance
+                ? 3 - (cycle / 0.62) * 6
+                : -3 + ((cycle - 0.62) / 0.38) * 6
+            : 0,
+          lift = moving
+            ? run
+              ? Math.max(0, Math.cos(a)) * 4.5 + airborne
+              : stance
+                ? 0
+                : Math.sin(((cycle - 0.62) / 0.38) * Math.PI) * 2.4
+            : 0,
+          knee =
+            hip +
+            (front ? -1 : 2) +
+            swing * 0.35 +
+            (front ? -1 : 1) * lift * 0.25,
           foot = hip + swing;
         line(
           [
             [hip, by + 2],
-            [knee, 23],
+            [knee, 23 - lift * 0.4],
           ],
           near ? fur : dark,
           near ? 2.3 : 1.8,
         );
         line(
           [
-            [knee, 23],
+            [knee, 23 - lift * 0.4],
             [foot, 28 - lift],
           ],
           near ? 0xb3ae94 : 0x777c6b,
@@ -141,8 +181,8 @@ export function makeWolfTextures(scene: {
         line(
           [
             [7, by],
-            [3, by + 5],
-            [2, by + 9],
+            [3, by + 5 + tailSwing * 0.5],
+            [2, by + (run ? 6 : 9) + tailSwing],
           ],
           dark,
           pup ? 3 : 4,
@@ -150,7 +190,7 @@ export function makeWolfTextures(scene: {
         line(
           [
             [6, by + 1],
-            [3, by + 5],
+            [3, by + 5 + tailSwing * 0.5],
           ],
           fur,
           2.8,
@@ -188,18 +228,20 @@ export function makeWolfTextures(scene: {
                 ? 29
                 : attack
                   ? 28 + (frame >= 3 && frame <= 5 ? 1 : 0)
-                  : 27,
+                  : run
+                    ? 28
+                    : 27 + (idle ? Math.sin(phase) * 0.4 : 0),
           hy = rest
             ? 23
             : fallen
               ? 12 + drop * 13
               : low
-                ? 24
+                ? 24 + Math.sin(phase) * 0.6
                 : alert
                   ? 9
                   : pup
                     ? 12
-                    : 11;
+                    : 11 + (run ? 0.7 : idle ? Math.sin(phase) * 0.3 : 0);
         line(
           [
             [24, by],

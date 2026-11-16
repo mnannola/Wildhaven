@@ -35,8 +35,9 @@ export function detailedGraphics(raw: Phaser.GameObjects.Graphics) {
 export const deerPoses = [
   'deer',
   'deer-sleep',
+  ...Array.from({ length: 16 }, (_, i) => `deer-idle-${i}`),
   ...['walk', 'run', 'sniff', 'search'].flatMap((a) =>
-    Array.from({ length: 8 }, (_, i) => `deer-${a}-${i}`),
+    Array.from({ length: 16 }, (_, i) => `deer-${a}-${i}`),
   ),
   ...['alert', 'sniff', 'search'].flatMap((a) =>
     Array.from({ length: 8 }, (_, i) => `deer-${a}-idle-${i}`),
@@ -76,7 +77,13 @@ export function makeDeerTextures(scene: {
         buck = form === 'buck',
         fawn = form === 'fawn',
         frame = Number(pose.match(/-(\d+)$/)?.[1] ?? 0),
-        phase = (frame / 8) * Math.PI * 2;
+        phase =
+          (frame /
+            (/deer-(walk|run|sniff|search)-\d|deer-idle-/.test(pose)
+              ? 16
+              : 8)) *
+          Math.PI *
+          2;
       const sleeping = pose === 'deer-sleep',
         rest = sleeping || pose.includes('family-rest'),
         dead = pose.includes('carcass'),
@@ -91,7 +98,15 @@ export function makeDeerTextures(scene: {
           pose.includes('sniff'),
         nurse = pose.includes('family-nurse-'),
         court = pose.includes('family-court');
-      const bob = moving ? Math.sin(phase * 2) * (run ? 0.7 : 0.25) : 0,
+      const idle = pose.includes('deer-idle-'),
+        airborne = run ? Math.max(0, Math.sin(phase)) : 0,
+        bob = moving
+          ? run
+            ? -airborne * 1.8
+            : Math.sin(phase * 2) * 0.25
+          : idle
+            ? Math.sin(phase) * 0.12
+            : 0,
         by = rest ? 21 : 14.5 + bob + drop * 7.5;
       const fur = fawn ? 0xc18a50 : buck ? 0xa77949 : 0xb78954,
         light = 0xd9b77d,
@@ -107,24 +122,52 @@ export function makeDeerTextures(scene: {
         g.fillStyle(color);
         for (const [x, y] of points) g.fillCircle(x, y, width / 2);
       };
-      g.fillStyle(0x1c3025, 0.2).fillEllipse(18, 29, 29, 6);
+      g.fillStyle(0x1c3025, 0.2 - airborne * 0.06).fillEllipse(
+        18,
+        29,
+        29 - airborne * 5,
+        6 - airborne,
+      );
       function leg(x: number, front: boolean, near: boolean) {
-        const a = phase + (front ? 0 : Math.PI) + (near ? 0 : Math.PI),
-          swing = moving ? Math.sin(a) * (run ? 5 : 2.5) : 0,
-          lift = moving ? Math.max(0, Math.cos(a)) * (run ? 4 : 1.5) : 0;
+        const a =
+            phase +
+            (front ? 0 : run ? 1.8 : Math.PI) +
+            (near ? 0 : run ? 0.45 : Math.PI / 2),
+          cycle = (((a / (Math.PI * 2)) % 1) + 1) % 1,
+          // Walk: longer planted stance and a shorter lifted recovery.
+          stance = cycle < 0.65,
+          swing = moving
+            ? run
+              ? Math.sin(a) * 6.2
+              : stance
+                ? 3 - (cycle / 0.65) * 6
+                : -3 + ((cycle - 0.65) / 0.35) * 6
+            : 0,
+          lift = moving
+            ? run
+              ? Math.max(0, Math.cos(a)) * 5 + airborne
+              : stance
+                ? 0
+                : Math.sin(((cycle - 0.65) / 0.35) * Math.PI) * 2.8
+            : 0;
         const foot = x + swing,
-          knee = x + (front ? -0.6 : 2) + swing * 0.4;
+          knee =
+            x +
+            (front ? -0.6 : 2) +
+            swing * 0.4 +
+            (run ? (front ? -1 : 1) * lift * 0.35 : 0),
+          kneeY = 22 - drop * 2 - lift * 0.45;
         line(
           [
             [x, by + 2],
-            [knee, 22 - drop * 2],
+            [knee, kneeY],
           ],
           near ? fur : shade,
           near ? 1.7 : 1.3,
         );
         line(
           [
-            [knee, 22 - drop * 2],
+            [knee, kneeY],
             [foot, 29 - lift],
           ],
           near ? 0x9b744e : shade,
@@ -184,12 +227,17 @@ export function makeDeerTextures(scene: {
           );
         g.fillStyle(0xd8c29b, 0.8).fillEllipse(17, by + 3, 15, 1.6);
         g.fillStyle(fur).fillEllipse(8, by, 6, 8).fillEllipse(24, by, 5, 8);
-        // A short white underside, rather than a raised triangular flag at rest.
+        // Alarmed sprinting exposes the white flag; relaxed deer flick occasionally.
+        const tailLift = run
+          ? 4 + Math.sin(phase) * 0.6
+          : idle && frame >= 12
+            ? Math.sin(((frame - 12) / 4) * Math.PI) * 3
+            : 0;
         line(
           [
             [5, by - 1],
-            [3.1, by + 1.5],
-            [3.6, by + 3],
+            [3.1, by + 1.5 - tailLift],
+            [3.6, by + 3 - tailLift * 1.6],
           ],
           fur,
           1.8,
@@ -197,7 +245,7 @@ export function makeDeerTextures(scene: {
         line(
           [
             [3.8, by],
-            [3.1, by + 2.8],
+            [3.1, by + 2.8 - tailLift * 1.6],
           ],
           0xe5d8bc,
           1,
@@ -230,7 +278,7 @@ export function makeDeerTextures(scene: {
           leg(9, false, true);
           leg(23, true, true);
         }
-        const hx = rest ? 24 : fallen ? 28 : low ? 29 : 26.5,
+        const hx = rest ? 24 : fallen ? 28 : low ? 29 : run ? 27.4 : 26.5,
           hy = rest
             ? 21
             : fallen
@@ -239,7 +287,14 @@ export function makeDeerTextures(scene: {
                 ? 24 + (frame % 2) * 0.35
                 : nurse
                   ? 15
-                  : 9.8 + (court ? Math.sin(phase) * 0.7 : 0);
+                  : 9.8 +
+                    (run
+                      ? 1.3 + Math.sin(phase) * 0.35
+                      : court
+                        ? Math.sin(phase) * 0.7
+                        : idle
+                          ? Math.sin(phase) * 0.3
+                          : 0);
         line(
           rest || fallen || low
             ? [
@@ -279,11 +334,17 @@ export function makeDeerTextures(scene: {
           0xe7d5b0,
           0.7,
         );
-        const tilt = low ? 2 : 0;
+        const earTurn =
+          idle && frame >= 4 && frame <= 8
+            ? Math.sin(((frame - 4) / 4) * Math.PI)
+            : pose.includes('alert')
+              ? Math.sin(phase)
+              : 0;
+        const tilt = low ? 2 : run ? 1 : 0;
         line(
           [
             [hx - 1, hy - 1],
-            [hx - 4.3, hy - 4 + tilt],
+            [hx - 4.3 - earTurn * 1.6, hy - 4 + tilt + earTurn * 0.7],
           ],
           shade,
           1.7,
@@ -291,7 +352,7 @@ export function makeDeerTextures(scene: {
         line(
           [
             [hx + 1, hy - 1],
-            [hx + 2.7, hy - 4.3 + tilt],
+            [hx + 2.7 + earTurn, hy - 4.3 + tilt + earTurn * 0.5],
           ],
           shade,
           1.6,
@@ -299,7 +360,7 @@ export function makeDeerTextures(scene: {
         line(
           [
             [hx - 1.5, hy - 1.8],
-            [hx - 3.8, hy - 3.8 + tilt],
+            [hx - 3.8 - earTurn * 1.4, hy - 3.8 + tilt + earTurn * 0.7],
           ],
           0xd5b58c,
           0.8,

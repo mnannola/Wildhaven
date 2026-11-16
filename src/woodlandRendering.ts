@@ -1,4 +1,11 @@
 import type Phaser from 'phaser';
+import {
+  riverFlow,
+  drawRiver,
+  drawLake,
+  paintWater,
+  type RiverFlow,
+} from './riverRendering';
 import { W, H, TILE, type World } from './sim';
 
 // Coordinate noise is independent of the simulation RNG, including after loading a save.
@@ -150,6 +157,7 @@ export class WoodlandRenderer {
   private leafSources: { x: number; y: number; phase: number }[] = [];
   private lastWind = -1;
   private waterTiles: number[] = [];
+  private flow: RiverFlow[] = [];
   private topology = '';
   private lastWater = -1;
   private groundKey = 'woodland-ground';
@@ -192,6 +200,7 @@ export class WoodlandRenderer {
         c.fillStyle = wash;
         c.fillRect(x - r, y - r, r * 2, r * 2);
       }
+    paintWater(c, w);
     for (let i = 0; i < w.cells.length; i++) {
       const cell = w.cells[i],
         tx = i % W,
@@ -200,20 +209,6 @@ export class WoodlandRenderer {
         y = ty * TILE,
         n = woodlandNoise(tx, ty);
       if (cell.kind === 'water' || cell.ford) {
-        c.fillStyle = '#386d68';
-        c.fillRect(x, y, TILE, TILE);
-        for (let k = 0; k < 12; k++) {
-          const px = x + woodlandNoise(i, k, 1) * 24,
-            py = y + woodlandNoise(i, k, 2) * 24;
-          ellipse(
-            c,
-            px,
-            py,
-            2 + woodlandNoise(i, k, 3) * 4,
-            1,
-            ['#6e9e864b', '#b9ba7e35', '#183f4838'][k % 3],
-          );
-        }
         if (cell.kind === 'water') this.waterTiles.push(i);
       } else {
         for (let k = 0; k < 18; k++) {
@@ -343,6 +338,7 @@ export class WoodlandRenderer {
         this.trees.push({ image, x, y, alpha: 1 });
       }
     this.lastWater = -1;
+    this.flow = riverFlow(w);
     this.lastWind = -1;
     this.grass = [];
     this.leafSources = [];
@@ -401,23 +397,13 @@ export class WoodlandRenderer {
         tree.alpha = alpha;
       }
     }
-    const tick = Math.floor(w.time * 8);
+    const tick = Math.floor(w.time * 20);
     if (tick === this.lastWater) return;
     this.lastWater = tick;
     const g = this.water;
     g.clear();
-    for (const i of this.waterTiles) {
-      if (i % 3) continue;
-      const phase = (tick / 32 + woodlandNoise(i, 1)) % 1,
-        x = (i % W) * TILE + 4 + woodlandNoise(i, 2) * 10,
-        y = Math.floor(i / W) * TILE + 4 + phase * 15;
-      g.lineStyle(0.8, 0xbad3ad, Math.sin(phase * Math.PI) * 0.32).lineBetween(
-        x,
-        y,
-        x + 5 + woodlandNoise(i, 3) * 6,
-        y - 0.7,
-      );
-    }
+    drawRiver(g, this.flow, tick / 20);
+    drawLake(g, w, this.waterTiles, tick / 20);
   }
   private drawWind(w: World) {
     const tick = Math.floor(w.time * 24);
