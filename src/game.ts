@@ -1384,7 +1384,13 @@ export class Habitat extends Phaser.Scene {
       }
       s.setData('pose', pose);
     }
-    this.woodland?.update(bridge.world, selected);
+    this.woodland?.update(
+      bridge.world,
+      [...this.actors.values()]
+        .filter((s) => s.visible && s.alpha > 0)
+        .map((s) => ({ ...s.getBounds(), depth: s.depth })),
+      delta,
+    );
     this.drawFish();
     this.drawHomes();
     this.marks.clear();

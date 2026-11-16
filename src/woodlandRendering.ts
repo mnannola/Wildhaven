@@ -144,6 +144,11 @@ export class WoodlandRenderer {
     alpha: number;
   }[] = [];
   private water: Phaser.GameObjects.Graphics;
+  private foliage: Phaser.GameObjects.Graphics;
+  private leaves: Phaser.GameObjects.Graphics;
+  private grass: { x: number; y: number; phase: number }[] = [];
+  private leafSources: { x: number; y: number; phase: number }[] = [];
+  private lastWind = -1;
   private waterTiles: number[] = [];
   private topology = '';
   private lastWater = -1;
@@ -152,6 +157,8 @@ export class WoodlandRenderer {
     this.makeTrees();
     this.ground = scene.add.image(0, 0, '__WHITE').setOrigin(0).setDepth(-2);
     this.water = scene.add.graphics().setDepth(-0.5);
+    this.foliage = scene.add.graphics().setDepth(-0.75);
+    this.leaves = scene.add.graphics().setDepth(9000);
     scene.events.once('shutdown', () => {
       for (const key of [
         this.groundKey,
@@ -336,16 +343,59 @@ export class WoodlandRenderer {
         this.trees.push({ image, x, y, alpha: 1 });
       }
     this.lastWater = -1;
+    this.lastWind = -1;
+    this.grass = [];
+    this.leafSources = [];
+    for (let i = 0; i < w.cells.length; i++) {
+      const c = w.cells[i],
+        n = woodlandNoise(i, 5, 30);
+      if (c.kind === 'grass' && !c.ford && !c.forage && n > 0.83)
+        this.grass.push({
+          x: ((i % W) + 0.5) * TILE,
+          y: (Math.floor(i / W) + 0.7) * TILE,
+          phase: n * 20,
+        });
+    }
+    // A bounded, sparse set of falling leaves instead of unbounded particles.
+    for (let i = 0; i < this.trees.length; i++)
+      if (i % 11 === 0) {
+        const t = this.trees[i];
+        this.leafSources.push({
+          x: t.x,
+          y: t.y,
+          phase: woodlandNoise(i, 4, 31) * 18,
+        });
+      }
   }
-  update(w: World, selected?: { x: number; y: number }) {
-    // Only the selected animal's nearby crowns fade, keeping it inspectable.
+  update(
+    w: World,
+    animals: readonly {
+      x: number;
+      y: number;
+      width: number;
+      height: number;
+      depth: number;
+    }[] = [],
+    deltaMs = 1000 / 60,
+  ) {
+    this.drawWind(w);
+    // Real frame time keeps inspection fades smooth at every simulation speed,
+    // including pause. Exponential easing also reverses without a jump.
+    const blend = 1 - Math.exp(-Math.max(0, Math.min(deltaMs, 100)) / 100);
+    // Match rendered sprite bounds, including growing young and large bears.
+    // Depth must also put the animal behind the tree, not in front of it.
     for (const tree of this.trees) {
-      const hidden =
-          selected &&
-          Math.abs(selected.x * TILE - tree.x) < 27 &&
-          selected.y * TILE < tree.y &&
-          selected.y * TILE > tree.y - 65,
-        alpha = hidden ? 0.45 : 1;
+      const hidden = animals.some(
+          (a) =>
+            a.depth < tree.y &&
+            a.x + a.width > tree.x - 40 &&
+            a.x < tree.x + 40 &&
+            a.y + a.height > tree.y - 88 &&
+            a.y < tree.y + 5,
+        ),
+        target = hidden ? 0.45 : 1,
+        eased = tree.alpha + (target - tree.alpha) * blend,
+        alpha = Math.abs(target - eased) < 0.001 ? target : eased;
       if (alpha !== tree.alpha) {
         tree.image.setAlpha(alpha);
         tree.alpha = alpha;
@@ -367,6 +417,60 @@ export class WoodlandRenderer {
         x + 5 + woodlandNoise(i, 3) * 6,
         y - 0.7,
       );
+    }
+  }
+  private drawWind(w: World) {
+    const tick = Math.floor(w.time * 24);
+    if (tick === this.lastWind) return;
+    this.lastWind = tick;
+    const time = tick / 24;
+    for (const t of this.trees) {
+      const phase =
+        woodlandNoise(Math.floor(t.x), Math.floor(t.y), 32) * Math.PI * 2;
+      // Several pixels of crown travel remain visible at the default fit zoom.
+      // The root pivot stays planted while each tree follows its own breeze phase.
+      t.image.setRotation(
+        Math.sin(time * 1.05 + phase) * 0.032 +
+          Math.sin(time * 0.43 + phase) * 0.009,
+      );
+    }
+    const g = this.foliage;
+    g.clear();
+    for (const p of this.grass) {
+      const lean = Math.sin(time * 1.35 + p.phase) * 4;
+      // A darker base and sunlit tips keep tufts distinct from the ground wash.
+      g.fillStyle(0x344f2d, 0.25).fillEllipse(p.x, p.y + 1, 15, 4);
+      for (let k = -2; k <= 2; k++) {
+        const height = 16 - Math.abs(k) * 2;
+        g.lineStyle(1.7, k % 2 === 0 ? 0x536c31 : 0x627c38, 1)
+          .beginPath()
+          .moveTo(p.x + k * 1.8, p.y)
+          .lineTo(p.x + k * 2 + lean * 0.35, p.y - height * 0.55)
+          .lineTo(p.x + k * 2.8 + lean, p.y - height)
+          .strokePath();
+        g.lineStyle(1.1, 0xc0c77b, 0.95)
+          .beginPath()
+          .moveTo(p.x + k * 2 + lean * 0.35, p.y - height * 0.55)
+          .lineTo(p.x + k * 2.8 + lean, p.y - height)
+          .strokePath();
+      }
+    }
+    const leaves = this.leaves;
+    leaves.clear();
+    for (const p of this.leafSources) {
+      const cycle = (time + p.phase) % 18;
+      if (cycle > 7) continue;
+      const progress = cycle / 7,
+        x = p.x + progress * 21 + Math.sin(cycle * 1.6 + p.phase) * 5,
+        y = p.y - 63 + progress * 70;
+      const alpha = Math.min(1, progress * 6, (1 - progress) * 5) * 0.65,
+        flutter = Math.sin(cycle * 4 + p.phase);
+      leaves
+        .fillStyle(0xc2ac58, alpha)
+        .fillEllipse(x, y, 2.8, 0.7 + Math.abs(flutter) * 1.7);
+      leaves
+        .lineStyle(0.5, 0x8e8043, alpha)
+        .lineBetween(x - 1, y, x + 1, y + flutter);
     }
   }
   private makeTrees() {
