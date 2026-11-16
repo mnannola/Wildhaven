@@ -2,6 +2,8 @@ import type { Animal } from './sim';
 import { maturity, lifeStage } from './lifecycle';
 
 export function animalTexture(a: Animal, pose: string) {
+  if (a.species === 'bear' && lifeStage(a) === 'juvenile') return pose + '-cub';
+  if (a.species === 'wolf' && lifeStage(a) === 'juvenile') return pose + '-pup';
   if (a.species !== 'deer') return pose;
   return lifeStage(a) === 'juvenile'
     ? pose + '-fawn-antlerless'

@@ -1,3 +1,5 @@
+import { makeBearTextures, BEAR_TEXTURE_SCALE } from './bearRendering';
+import { makeWolfTextures, WOLF_TEXTURE_SCALE } from './wolfRendering';
 import { makeDeerTextures, DEER_TEXTURE_SCALE } from './deerRendering';
 import { WoodlandRenderer, drawWoodlandForage } from './woodlandRendering';
 import Phaser from 'phaser';
@@ -98,6 +100,8 @@ export class Habitat extends Phaser.Scene {
     this.makeAntlerlessTextures();
     this.makeFamilyTextures();
     this.makeDeerTextures();
+    this.makeWolfTextures();
+    this.makeBearTextures();
     for (const species of ['deer', 'wolf', 'bear'] as const)
       bridge.spriteUrls[species] = this.textures.getBase64(
         species === 'deer' ? 'deer-antlerless' : species,
@@ -228,6 +232,12 @@ export class Habitat extends Phaser.Scene {
     c.setZoom(Phaser.Math.Clamp(c.zoom * f, 0.3, 3));
     bridge.zoom = c.zoom;
     bridge.onChange();
+  }
+  makeBearTextures() {
+    makeBearTextures(this);
+  }
+  makeWolfTextures() {
+    makeWolfTextures(this);
   }
   makeDeerTextures() {
     makeDeerTextures(this);
@@ -1297,7 +1307,12 @@ export class Habitat extends Phaser.Scene {
       const textureKey = animalTexture(a, poseKey),
         build = sexBuild(a),
         size =
-          juvenileSize(a) / (a.species === 'deer' ? DEER_TEXTURE_SCALE : 1),
+          juvenileSize(a) /
+          (a.species === 'deer'
+            ? DEER_TEXTURE_SCALE
+            : a.species === 'wolf'
+              ? WOLF_TEXTURE_SCALE
+              : BEAR_TEXTURE_SCALE),
         restingFamily = family?.action === 'rest',
         sx =
           (sleeping || restingFamily

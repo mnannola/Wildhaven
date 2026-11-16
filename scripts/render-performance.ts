@@ -120,6 +120,8 @@ for (const count of [50, 100, 200]) {
     'makeAntlerlessTextures',
     'makeFamilyTextures',
     'makeDeerTextures',
+    'makeWolfTextures',
+    'makeBearTextures',
   ])
     scene[method]();
   scene.add = {
@@ -194,6 +196,12 @@ writeFileSync(
 );
 
 function verifyAppearance(scene: any, w: World) {
+  for (const key of textures)
+    if (key.startsWith('bear') && !key.endsWith('-cub'))
+      assert.ok(textures.has(key + '-cub'), 'Missing cub animation: ' + key);
+  for (const key of textures)
+    if (key.startsWith('wolf') && !key.endsWith('-pup'))
+      assert.ok(textures.has(key + '-pup'), 'Missing pup animation: ' + key);
   for (const key of textures)
     if (key.startsWith('deer') && !key.endsWith('-antlerless')) {
       assert.ok(

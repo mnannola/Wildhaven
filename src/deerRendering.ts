@@ -1,7 +1,7 @@
 import type Phaser from 'phaser';
 export const DEER_TEXTURE_SCALE = 3;
 
-function detailedGraphics(raw: Phaser.GameObjects.Graphics) {
+export function detailedGraphics(raw: Phaser.GameObjects.Graphics) {
   // Supersample the artwork while retaining the same world-space footprint.
   const proxy: Phaser.GameObjects.Graphics = new Proxy(raw, {
     get(target, key) {
