@@ -1,0 +1,43 @@
+{
+  "label": "sustained",
+  "node": "v22.20.0",
+  "steps": 600,
+  "results": [
+    {
+      "count": 50,
+      "steps": 600,
+      "seed": 4721,
+      "meanMs": 1.8548461666666631,
+      "p50Ms": 1.7297000000000935,
+      "p95Ms": 3.484199999999987,
+      "maxMs": 5.4633000000001175,
+      "checksum": "15276460af74447966c9d90f01c0ae3bfa0934eb520981b856f19cf8aeb0b305",
+      "survivors": 47,
+      "profile": {}
+    },
+    {
+      "count": 100,
+      "steps": 600,
+      "seed": 4721,
+      "meanMs": 3.812854500000013,
+      "p50Ms": 3.7163000000000466,
+      "p95Ms": 5.959299999999985,
+      "maxMs": 8.227599999999711,
+      "checksum": "8fca72a59524e8abd63f4ddf40a579ff9c224fa1b7f2063155cfcb4840ca0497",
+      "survivors": 95,
+      "profile": {}
+    },
+    {
+      "count": 200,
+      "steps": 600,
+      "seed": 4721,
+      "meanMs": 9.171185166666682,
+      "p50Ms": 9.046299999999974,
+      "p95Ms": 12.982900000000882,
+      "maxMs": 20.38390000000072,
+      "checksum": "c7339a0e8f6e3ef3bb4127719357c00c190229e1f6b88d8c9d65e5485caeee39",
+      "survivors": 190,
+      "profile": {}
+    }
+  ]
+}

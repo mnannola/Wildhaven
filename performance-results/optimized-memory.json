@@ -1,0 +1,43 @@
+{
+  "label": "optimized-memory",
+  "node": "v22.20.0",
+  "steps": 120,
+  "results": [
+    {
+      "count": 50,
+      "steps": 120,
+      "seed": 4721,
+      "meanMs": 2.181372500000005,
+      "p50Ms": 2.0668999999999755,
+      "p95Ms": 4.400300000000016,
+      "maxMs": 5.178600000000074,
+      "checksum": "665983a1732e6e95563fdc5e7a056e5989f857ab1219d38d661dde38a0bf3498",
+      "survivors": 48,
+      "profile": {}
+    },
+    {
+      "count": 100,
+      "steps": 120,
+      "seed": 4721,
+      "meanMs": 3.886745,
+      "p50Ms": 3.707300000000032,
+      "p95Ms": 6.40319999999997,
+      "maxMs": 8.206900000000132,
+      "checksum": "ca19358d017be98e2b5f68f3bfb471a05b126ee414b1135cdc1ed6d7b5e7408a",
+      "survivors": 97,
+      "profile": {}
+    },
+    {
+      "count": 200,
+      "steps": 120,
+      "seed": 4721,
+      "meanMs": 10.572595833333361,
+      "p50Ms": 10.569899999999961,
+      "p95Ms": 14.982800000000225,
+      "maxMs": 15.948399999999992,
+      "checksum": "dcab62e9d161eea0bb2c6e869e438390084b2186b09a916d1c5de87aa73f333c",
+      "survivors": 191,
+      "profile": {}
+    }
+  ]
+}

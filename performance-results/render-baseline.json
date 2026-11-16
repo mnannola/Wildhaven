@@ -1,0 +1,87 @@
+{
+  "label": "baseline",
+  "scope": "Actual Habitat.update with instrumented display objects; no GPU/DOM/paint timing. Simulation paused after 2 simulated seconds.",
+  "results": [
+    {
+      "count": 50,
+      "frames": 300,
+      "meanMs": 0.4075933333333296,
+      "p95Ms": 0.6743999999998778,
+      "displayCalls": {
+        "clear": 1200,
+        "setTexture": 15000,
+        "setScale": 15000,
+        "setPosition": 30000,
+        "setDepth": 15000,
+        "setFlipX": 15000,
+        "setAlpha": 15000,
+        "setRotation": 15000,
+        "setTint": 600,
+        "setText": 15000,
+        "setVisible": 15000,
+        "clearTint": 14400,
+        "fillStyle": 25200,
+        "fillRect": 1200,
+        "lineStyle": 13200,
+        "strokeEllipse": 12600,
+        "strokeCircle": 600,
+        "lineBetween": 1200,
+        "fillEllipse": 12300,
+        "fillTriangle": 12300
+      }
+    },
+    {
+      "count": 100,
+      "frames": 300,
+      "meanMs": 0.585892666666667,
+      "p95Ms": 0.7146999999999935,
+      "displayCalls": {
+        "clear": 1200,
+        "setTexture": 30000,
+        "setScale": 30000,
+        "setPosition": 60000,
+        "setDepth": 30000,
+        "setFlipX": 30000,
+        "setAlpha": 30000,
+        "setRotation": 30000,
+        "clearTint": 29700,
+        "setText": 30000,
+        "setVisible": 30000,
+        "setTint": 300,
+        "fillStyle": 25500,
+        "fillRect": 1800,
+        "lineStyle": 12900,
+        "strokeEllipse": 12900,
+        "fillEllipse": 12300,
+        "fillTriangle": 12300
+      }
+    },
+    {
+      "count": 200,
+      "frames": 300,
+      "meanMs": 1.1344150000000188,
+      "p95Ms": 1.3942999999999302,
+      "displayCalls": {
+        "clear": 1200,
+        "setTexture": 60000,
+        "setScale": 60000,
+        "setPosition": 120000,
+        "setDepth": 60000,
+        "setFlipX": 60000,
+        "setAlpha": 60000,
+        "setRotation": 60000,
+        "clearTint": 58500,
+        "setText": 60000,
+        "setVisible": 60000,
+        "fillStyle": 25500,
+        "fillRect": 1800,
+        "lineStyle": 13200,
+        "strokeEllipse": 12900,
+        "setTint": 1500,
+        "lineBetween": 900,
+        "fillEllipse": 12300,
+        "fillTriangle": 12300
+      }
+    }
+  ]
+}

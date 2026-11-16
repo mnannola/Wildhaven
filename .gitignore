@@ -1,0 +1,40 @@
+# Dependencies and build output
+node_modules/
+dist/
+.vite/
+*.tsbuildinfo
+
+# Local runtime and caches
+.sites-runtime/
+.cache/
+.npm/
+
+# Environment variables and local overrides (keep shareable examples)
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.local
+
+# Logs and temporary test/benchmark console output
+*.log
+/*-output.txt
+coverage/
+test-results/
+playwright-report/
+blob-report/
+
+# Keep balance-results/ and performance-results/: documented benchmark baselines.
+
+# Editor and operating-system files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Generated source packages
+*.tar.gz

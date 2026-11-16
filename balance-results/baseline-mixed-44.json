@@ -1,0 +1,358 @@
+{
+  "scenario": "mixed",
+  "seed": 44,
+  "duration": 1200,
+  "initial": {
+    "deer": 24,
+    "wolf": 3,
+    "bear": 2
+  },
+  "remaining": {
+    "deer": 10,
+    "wolf": 3,
+    "bear": 2
+  },
+  "deaths": {
+    "predation": {
+      "deer": 6,
+      "wolf": 0,
+      "bear": 0
+    },
+    "combat": {
+      "deer": 0,
+      "wolf": 0,
+      "bear": 0
+    },
+    "hunger": {
+      "deer": 0,
+      "wolf": 0,
+      "bear": 0
+    },
+    "thirst": {
+      "deer": 8,
+      "wolf": 0,
+      "bear": 0
+    },
+    "other": {
+      "deer": 0,
+      "wolf": 0,
+      "bear": 0
+    }
+  },
+  "hunts": {
+    "wolf": {
+      "started": 44,
+      "successful": 7,
+      "failed": 37
+    },
+    "bear": {
+      "started": 0,
+      "successful": 0,
+      "failed": 0
+    }
+  },
+  "fishCaught": 32,
+  "meatEaten": 281,
+  "grassPercent": 100,
+  "fishPercent": 100,
+  "strain": {
+    "hungry": 0,
+    "thirsty": 0,
+    "exhausted": 0
+  },
+  "survivors": [
+    {
+      "id": 1,
+      "species": "deer",
+      "hunger": 25,
+      "thirst": 21,
+      "fatigue": 15,
+      "health": 100,
+      "action": "Checking surroundings",
+      "reason": "Sociability draws this deer toward remembered herd positions.",
+      "x": 21,
+      "y": 29
+    },
+    {
+      "id": 4,
+      "species": "deer",
+      "hunger": 16,
+      "thirst": 25,
+      "fatigue": 14,
+      "health": 100,
+      "action": "Fleeing",
+      "reason": "Predator nearby. Caution 71 controls detection distance.",
+      "x": 19,
+      "y": 32
+    },
+    {
+      "id": 5,
+      "species": "deer",
+      "hunger": 26,
+      "thirst": 15,
+      "fatigue": 24,
+      "health": 100,
+      "action": "Drinking",
+      "reason": "Returning to a discovered shoreline.",
+      "x": 52,
+      "y": 17
+    },
+    {
+      "id": 8,
+      "species": "deer",
+      "hunger": 21,
+      "thirst": 24,
+      "fatigue": 29,
+      "health": 100,
+      "action": "Checking surroundings",
+      "reason": "Restoring energy. Sleep requirement controls fatigue accumulation.",
+      "x": 20,
+      "y": 32
+    },
+    {
+      "id": 12,
+      "species": "deer",
+      "hunger": 19,
+      "thirst": 16,
+      "fatigue": 25,
+      "health": 100,
+      "action": "Grazing",
+      "reason": "Hunger is high. Boldness affects how close to predators it will feed.",
+      "x": 24,
+      "y": 31
+    },
+    {
+      "id": 18,
+      "species": "deer",
+      "hunger": 17,
+      "thirst": 19,
+      "fatigue": 31,
+      "health": 100,
+      "action": "Sleeping",
+      "reason": "Restoring energy. Sleep requirement controls fatigue accumulation.",
+      "x": 49,
+      "y": 22
+    },
+    {
+      "id": 19,
+      "species": "deer",
+      "hunger": 19,
+      "thirst": 22,
+      "fatigue": 12,
+      "health": 100,
+      "action": "Wandering",
+      "reason": "Exploring to discover food, water, and other animals.",
+      "x": 18,
+      "y": 28
+    },
+    {
+      "id": 20,
+      "species": "deer",
+      "hunger": 25,
+      "thirst": 20,
+      "fatigue": 22,
+      "health": 100,
+      "action": "Rejoining herd",
+      "reason": "Sociability draws this deer toward remembered herd positions.",
+      "x": 20,
+      "y": 31
+    },
+    {
+      "id": 21,
+      "species": "deer",
+      "hunger": 15,
+      "thirst": 19,
+      "fatigue": 21,
+      "health": 100,
+      "action": "Rejoining herd",
+      "reason": "Sociability draws this deer toward remembered herd positions.",
+      "x": 19,
+      "y": 25
+    },
+    {
+      "id": 24,
+      "species": "deer",
+      "hunger": 19,
+      "thirst": 15,
+      "fatigue": 16,
+      "health": 100,
+      "action": "Checking surroundings",
+      "reason": "Returning to a discovered shoreline.",
+      "x": 22,
+      "y": 28
+    },
+    {
+      "id": 25,
+      "species": "wolf",
+      "hunger": 24,
+      "thirst": 16,
+      "fatigue": 20,
+      "health": 100,
+      "action": "Seeking carcass",
+      "reason": "Scavenging conserves energy compared with hunting.",
+      "x": 58,
+      "y": 12
+    },
+    {
+      "id": 26,
+      "species": "wolf",
+      "hunger": 20,
+      "thirst": 28,
+      "fatigue": 16,
+      "health": 100,
+      "action": "Joining group",
+      "reason": "Sociability draws this animal toward companions.",
+      "x": 65,
+      "y": 10
+    },
+    {
+      "id": 27,
+      "species": "wolf",
+      "hunger": 23,
+      "thirst": 20,
+      "fatigue": 10,
+      "health": 100,
+      "action": "Regrouping",
+      "reason": "Returning to a packmate’s last known position.",
+      "x": 64,
+      "y": 10
+    },
+    {
+      "id": 28,
+      "species": "bear",
+      "hunger": 24,
+      "thirst": 18,
+      "fatigue": 12,
+      "health": 100,
+      "action": "Fishing",
+      "reason": "Fish are preferred. Returning to a remembered fishing bank.",
+      "x": 52,
+      "y": 36
+    },
+    {
+      "id": 29,
+      "species": "bear",
+      "hunger": 29,
+      "thirst": 31,
+      "fatigue": 12,
+      "health": 100,
+      "action": "Seeking water",
+      "reason": "Returning to a discovered shoreline.",
+      "x": 29,
+      "y": 33
+    }
+  ],
+  "checkpoints": [
+    {
+      "time": 0,
+      "population": {
+        "deer": 24,
+        "wolf": 3,
+        "bear": 2
+      },
+      "hungry": 0,
+      "thirsty": 0
+    },
+    {
+      "time": 120,
+      "population": {
+        "deer": 22,
+        "wolf": 3,
+        "bear": 2
+      },
+      "hungry": 0,
+      "thirsty": 0
+    },
+    {
+      "time": 240,
+      "population": {
+        "deer": 22,
+        "wolf": 3,
+        "bear": 2
+      },
+      "hungry": 0,
+      "thirsty": 3
+    },
+    {
+      "time": 360,
+      "population": {
+        "deer": 21,
+        "wolf": 3,
+        "bear": 2
+      },
+      "hungry": 1,
+      "thirsty": 2
+    },
+    {
+      "time": 480,
+      "population": {
+        "deer": 19,
+        "wolf": 3,
+        "bear": 2
+      },
+      "hungry": 0,
+      "thirsty": 0
+    },
+    {
+      "time": 600,
+      "population": {
+        "deer": 17,
+        "wolf": 3,
+        "bear": 2
+      },
+      "hungry": 0,
+      "thirsty": 0
+    },
+    {
+      "time": 720,
+      "population": {
+        "deer": 17,
+        "wolf": 3,
+        "bear": 2
+      },
+      "hungry": 0,
+      "thirsty": 4
+    },
+    {
+      "time": 840,
+      "population": {
+        "deer": 16,
+        "wolf": 3,
+        "bear": 2
+      },
+      "hungry": 4,
+      "thirsty": 6
+    },
+    {
+      "time": 960,
+      "population": {
+        "deer": 11,
+        "wolf": 3,
+        "bear": 2
+      },
+      "hungry": 1,
+      "thirsty": 1
+    },
+    {
+      "time": 1080,
+      "population": {
+        "deer": 10,
+        "wolf": 3,
+        "bear": 2
+      },
+      "hungry": 0,
+      "thirsty": 0
+    },
+    {
+      "time": 1200,
+      "population": {
+        "deer": 10,
+        "wolf": 3,
+        "bear": 2
+      },
+      "hungry": 0,
+      "thirsty": 0
+    }
+  ],
+  "elapsedSeconds": 37
+}

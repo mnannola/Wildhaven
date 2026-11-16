@@ -1,0 +1,49 @@
+{
+  "label": "reproduction-smoke",
+  "node": "v22.20.0",
+  "steps": 120,
+  "results": [
+    {
+      "count": 50,
+      "steps": 120,
+      "layout": "spread",
+      "saveVersion": 7,
+      "seed": 4721,
+      "meanMs": 2.3166383333333362,
+      "p50Ms": 2.0851000000000113,
+      "p95Ms": 4.854499999999916,
+      "maxMs": 5.760899999999992,
+      "checksum": "9dc0b7611b30822bc92b7f42dbe9eb27cc9a51fbe757f496b8fd991f11ce7891",
+      "survivors": 48,
+      "profile": {}
+    },
+    {
+      "count": 100,
+      "steps": 120,
+      "layout": "spread",
+      "saveVersion": 7,
+      "seed": 4721,
+      "meanMs": 4.103381666666669,
+      "p50Ms": 3.9914000000001124,
+      "p95Ms": 6.163099999999986,
+      "maxMs": 6.710299999999961,
+      "checksum": "965aa3bd613c869e863f2d1629ce5f351c30d6996de1b08db2822ed5de913f59",
+      "survivors": 96,
+      "profile": {}
+    },
+    {
+      "count": 200,
+      "steps": 120,
+      "layout": "spread",
+      "saveVersion": 7,
+      "seed": 4721,
+      "meanMs": 11.400198333333316,
+      "p50Ms": 11.045999999999822,
+      "p95Ms": 16.260999999999967,
+      "maxMs": 18.232100000000173,
+      "checksum": "01518d440c513cb1482f3b1a542e048cff5864e57708f059075e5ef8a6964097",
+      "survivors": 191,
+      "profile": {}
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "label": "optimized",
+  "scope": "Actual Habitat.update with instrumented display objects; no GPU/DOM/paint timing. Simulation paused after 2 simulated seconds.",
+  "results": [
+    {
+      "count": 50,
+      "frames": 300,
+      "meanMs": 0.3516490000000052,
+      "p95Ms": 0.6101000000001022,
+      "displayCalls": {
+        "clear": 900,
+        "fillStyle": 600,
+        "fillRect": 1200,
+        "lineStyle": 900,
+        "strokeEllipse": 300,
+        "strokeCircle": 600,
+        "lineBetween": 1200
+      }
+    },
+    {
+      "count": 100,
+      "frames": 300,
+      "meanMs": 0.535450666666684,
+      "p95Ms": 0.8253000000001975,
+      "displayCalls": {
+        "clear": 900,
+        "fillStyle": 900,
+        "fillRect": 1800,
+        "lineStyle": 600,
+        "strokeEllipse": 600
+      }
+    },
+    {
+      "count": 200,
+      "frames": 300,
+      "meanMs": 1.0453843333333408,
+      "p95Ms": 1.7078000000001339,
+      "displayCalls": {
+        "clear": 900,
+        "fillStyle": 900,
+        "fillRect": 1800,
+        "lineStyle": 900,
+        "strokeEllipse": 600,
+        "lineBetween": 900
+      }
+    }
+  ]
+}

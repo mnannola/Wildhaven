@@ -1,0 +1,83 @@
+{
+  "label": "final-check",
+  "scope": "Actual Habitat.update with instrumented display objects; no GPU/DOM/paint timing. Mode is paused or moving at 10 simulation steps/60 prepared frames. Simulation work is excluded from timed scene updates; animation texture keys are validated.",
+  "results": [
+    {
+      "count": 50,
+      "mode": "moving",
+      "frames": 300,
+      "meanMs": 0.3328903333333468,
+      "p95Ms": 0.5309999999999491,
+      "displayCalls": {
+        "clear": 950,
+        "setTexture": 1896,
+        "setPosition": 1886,
+        "setDepth": 772,
+        "setFlipX": 73,
+        "fillStyle": 4844,
+        "fillRect": 1488,
+        "setScale": 305,
+        "lineStyle": 2572,
+        "strokeEllipse": 2512,
+        "strokeCircle": 60,
+        "lineBetween": 120,
+        "fillEllipse": 2050,
+        "fillTriangle": 2050,
+        "clearTint": 2,
+        "setAlpha": 55
+      }
+    },
+    {
+      "count": 100,
+      "mode": "moving",
+      "frames": 300,
+      "meanMs": 0.5774799999999982,
+      "p95Ms": 0.7372000000000298,
+      "displayCalls": {
+        "clear": 951,
+        "setTexture": 4209,
+        "setPosition": 4218,
+        "setScale": 374,
+        "setDepth": 1794,
+        "setFlipX": 161,
+        "fillStyle": 18587,
+        "fillRect": 15112,
+        "lineStyle": 2524,
+        "strokeEllipse": 2416,
+        "fillEllipse": 2842,
+        "fillTriangle": 2050,
+        "strokeCircle": 108,
+        "lineBetween": 216,
+        "setTint": 2,
+        "clearTint": 2,
+        "setAlpha": 28
+      }
+    },
+    {
+      "count": 200,
+      "mode": "moving",
+      "frames": 300,
+      "meanMs": 1.0584030000000044,
+      "p95Ms": 1.386199999999917,
+      "displayCalls": {
+        "clear": 950,
+        "setTexture": 8930,
+        "setScale": 387,
+        "setPosition": 8863,
+        "setFlipX": 526,
+        "setDepth": 3565,
+        "fillStyle": 5234,
+        "fillRect": 2268,
+        "lineStyle": 3142,
+        "strokeEllipse": 2818,
+        "setTint": 6,
+        "strokeCircle": 180,
+        "lineBetween": 792,
+        "fillEllipse": 2050,
+        "fillTriangle": 2050,
+        "clearTint": 9,
+        "setAlpha": 99
+      }
+    }
+  ]
+}

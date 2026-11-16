@@ -1,0 +1,43 @@
+{
+  "label": "optimized",
+  "node": "v22.20.0",
+  "steps": 120,
+  "results": [
+    {
+      "count": 50,
+      "steps": 120,
+      "seed": 4721,
+      "meanMs": 4.834286666666666,
+      "p50Ms": 4.690699999999879,
+      "p95Ms": 9.161500000000046,
+      "maxMs": 11.832099999999969,
+      "checksum": "665983a1732e6e95563fdc5e7a056e5989f857ab1219d38d661dde38a0bf3498",
+      "survivors": 48,
+      "profile": {}
+    },
+    {
+      "count": 100,
+      "steps": 120,
+      "seed": 4721,
+      "meanMs": 7.86112333333334,
+      "p50Ms": 7.556700000000092,
+      "p95Ms": 13.27839999999992,
+      "maxMs": 17.044200000000274,
+      "checksum": "ca19358d017be98e2b5f68f3bfb471a05b126ee414b1135cdc1ed6d7b5e7408a",
+      "survivors": 97,
+      "profile": {}
+    },
+    {
+      "count": 200,
+      "steps": 120,
+      "seed": 4721,
+      "meanMs": 32.03769583333332,
+      "p50Ms": 31.76260000000002,
+      "p95Ms": 46.70460000000003,
+      "maxMs": 53.15610000000015,
+      "checksum": "dcab62e9d161eea0bb2c6e869e438390084b2186b09a916d1c5de87aa73f333c",
+      "survivors": 191,
+      "profile": {}
+    }
+  ]
+}

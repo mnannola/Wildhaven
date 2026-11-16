@@ -1,0 +1,43 @@
+{
+  "label": "baseline-clean",
+  "node": "v22.20.0",
+  "steps": 120,
+  "results": [
+    {
+      "count": 50,
+      "steps": 120,
+      "seed": 4721,
+      "meanMs": 6.3803216666666716,
+      "p50Ms": 4.179599999999937,
+      "p95Ms": 23.773699999999963,
+      "maxMs": 36.578899999999976,
+      "checksum": "665983a1732e6e95563fdc5e7a056e5989f857ab1219d38d661dde38a0bf3498",
+      "survivors": 48,
+      "profile": {}
+    },
+    {
+      "count": 100,
+      "steps": 120,
+      "seed": 4721,
+      "meanMs": 11.983935833333339,
+      "p50Ms": 8.32629999999972,
+      "p95Ms": 37.54730000000018,
+      "maxMs": 61.95270000000028,
+      "checksum": "ca19358d017be98e2b5f68f3bfb471a05b126ee414b1135cdc1ed6d7b5e7408a",
+      "survivors": 97,
+      "profile": {}
+    },
+    {
+      "count": 200,
+      "steps": 120,
+      "seed": 4721,
+      "meanMs": 34.962857499999956,
+      "p50Ms": 31.6875,
+      "p95Ms": 65.07800000000043,
+      "maxMs": 138.76729999999952,
+      "checksum": "dcab62e9d161eea0bb2c6e869e438390084b2186b09a916d1c5de87aa73f333c",
+      "survivors": 191,
+      "profile": {}
+    }
+  ]
+}
