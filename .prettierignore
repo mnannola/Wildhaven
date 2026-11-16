@@ -1,0 +1,2 @@
+# Dependencies, build output, and generated reports are also excluded by .gitignore.
+package-lock.json

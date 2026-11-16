@@ -5,10 +5,10 @@ This document records the aging implementation. Reproduction and dependent young
 Animals now have sex, age, a derived life stage, and an individual natural lifespan. Ages are measured in simulated seconds; one displayed simulated day is 240 seconds (four minutes at 1x). Pause, speed controls, and saves use the same simulation clock. These are compressed gameplay ages, not real animal lifespans.
 
 | Species | Adulthood | Elderhood | Maximum natural lifespan |
-| --- | ---: | ---: | ---: |
-| Deer | 2 days | 12 days | 18 days |
-| Wolf | 3 days | 15 days | 23 days |
-| Bear | 4 days | 20 days | 30 days |
+| ------- | --------: | --------: | -----------------------: |
+| Deer    |    2 days |   12 days |                  18 days |
+| Wolf    |    3 days |   15 days |                  23 days |
+| Bear    |    4 days |   20 days |                  30 days |
 
 Each animal's lifespan is sampled once between elderhood and the species maximum, with an increasing conditional mortality risk as an elder ages. It is saved, so loading or changing simulation speed does not reroll it. The maximum is a bound, not a guarantee of survival: predation, combat, hunger, and thirst still apply.
 

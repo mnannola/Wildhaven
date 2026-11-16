@@ -14,11 +14,11 @@ Animals must know a nearby food source: stocked grass for deer; carcasses or pre
 
 All times below use the existing four-minute simulated day:
 
-| Species | Pregnancy | Litter | Female recovery after birth | Weaning | Adulthood |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Deer | 1 day | 1–2 | 2 days | 1.2 days | 2 days |
-| Wolf | 1 day | 1–3 | 3 days | 1.8 days | 3 days |
-| Bear | 2 days | 1–2 | 4 days | 2.4 days | 4 days |
+| Species | Pregnancy | Litter | Female recovery after birth |  Weaning | Adulthood |
+| ------- | --------: | -----: | --------------------------: | -------: | --------: |
+| Deer    |     1 day |    1–2 |                      2 days | 1.2 days |    2 days |
+| Wolf    |     1 day |    1–3 |                      3 days | 1.8 days |    3 days |
+| Bear    |    2 days |    1–2 |                      4 days | 2.4 days |    4 days |
 
 Males also receive a species recovery interval after conception. Pregnancy stores the father's identity and trait snapshot, so his death or removal does not erase ancestry or change inheritance. The mother's death ends pregnancy.
 
@@ -46,10 +46,10 @@ Tests cover ordinary courtship/conception for all species, deterministic continu
 
 Two unmodified-terrain reserves were run for 1,200 simulated seconds with natural needs, perception, and predation:
 
-| Scenario | Seed | Initial deer/wolves/bears | Births | Final living deer/wolves/bears |
-| --- | ---: | --- | --- | --- |
-| Mixed | 4721 | 24 / 3 / 2 | 26 deer, 2 wolves | 37 / 5 / 2 |
-| Deer only | 44 | 20 / 0 / 0 | 23 deer | 43 / 0 / 0 |
+| Scenario  | Seed | Initial deer/wolves/bears | Births            | Final living deer/wolves/bears |
+| --------- | ---: | ------------------------- | ----------------- | ------------------------------ |
+| Mixed     | 4721 | 24 / 3 / 2                | 26 deer, 2 wolves | 37 / 5 / 2                     |
+| Deer only |   44 | 20 / 0 / 0                | 23 deer           | 43 / 0 / 0                     |
 
 The mixed run lost eleven deer to predation and two to thirst; the deer-only run had no deaths. Of 28 mixed-reserve offspring, 26 were alive at the end; all 23 deer-only offspring survived. None of the living dependents were orphaned. These runs validate normal family behavior over multiple weaning periods, not a stable long-term equilibrium. The mixed bears did not reproduce in this sample; focused behavior tests exercise bear reproduction. No resources or animals were replenished by the test harness after initialization.
 

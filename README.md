@@ -8,6 +8,12 @@ Aging is implemented: animals advance through juvenile, adult, and elder stages,
 
 `npm install` then `npm run dev`. Production: `npm run build`. Behavioral checks: `npm test`.
 
+## Formatting
+
+Run `npm run format` to format all supported files, including TypeScript, TSX, JavaScript, CSS, HTML, JSON, and Markdown. Run `npm run format:check` to check formatting without changing files.
+
+Prettier uses the shared `.prettierrc.json` configuration. Generated files and dependencies are excluded through `.gitignore`; `package-lock.json` keeps npm's generated formatting. For format on save, install your editor's Prettier extension, select Prettier as the default formatter, and enable format on save.
+
 ## Controls
 
 Drag to pan; scroll or use + / − to zoom. Click an animal to inspect it. Click Deer or Wolf to immediately add one animal near the center of the current view. The arrow returns to selection. Use ◎ for paths and detection radius. Pause / 1× / 2× / 5× control simulation speed. Saves persist in IndexedDB in the current browser; use Load to restore. Closing the page stops the simulation.
@@ -24,7 +30,7 @@ Territories and dens: see HOMES.md for pack dens, bear home ranges, herd gatheri
 - `src/main.tsx`: React journal, inspector, controls.
 - `src/storage.ts`: IndexedDB persistence.
 
-Prototype limitations: Animals use short goal-specific action plans. Animals perceive nearby resources and animals with tree-blocked sight, remember discoveries, and forget them over time. Navigation uses terrain-weighted A*; hunting and escape routes respect cover, obstacles, and river fords. Nearby animals are currently scanned directly. Species sprites are programmatically drawn pixel art. Reproduction and dependent young are implemented. No seasons or terrain editor. Simulation CPU performance has been measured at 50, 100, and 200 animals; see PERFORMANCE.md for results and browser-rendering limits. Simulated day counter advances every 240 seconds and is not yet a biological day/night cycle.
+Prototype limitations: Animals use short goal-specific action plans. Animals perceive nearby resources and animals with tree-blocked sight, remember discoveries, and forget them over time. Navigation uses terrain-weighted A\*; hunting and escape routes respect cover, obstacles, and river fords. Nearby animals are currently scanned directly. Species sprites are programmatically drawn pixel art. Reproduction and dependent young are implemented. No seasons or terrain editor. Simulation CPU performance has been measured at 50, 100, and 200 animals; see PERFORMANCE.md for results and browser-rendering limits. Simulated day counter advances every 240 seconds and is not yet a biological day/night cycle.
 
 New reserves start empty. Click a species button to add one animal near the center of the current view and select it in the inspector. Sprinting hunters and fleeing deer move faster, use running animations, and accumulate fatigue faster. Delete animal removes the selected animal. Reset animals clears all animals (including carcasses) and activity while keeping terrain, resources, and simulation time. Existing saves retain their animals.
 
@@ -53,3 +59,9 @@ Death and carcass visuals: a recorded death plays a short collapse, then settles
 Ecosystem statistics (World activity): population and grass/fish availability history, deaths by cause/species, predator pursuit outcomes, food consumed, available carcass meat, and living animals with hunger/thirst/fatigue at 80 or above. Samples are recorded every 5 simulated seconds plus population changes, retaining the latest 720. Lifetime totals are separate from the bounded history. Each food-seeking predator pursuit is one attempt; repeating a plan does not add attempts, shared pack kills can credit multiple pursuers, abandoned pursuits fail, and defensive fights are excluded. Player additions/removals are separate from deaths. Reset animals starts a new statistics period. Save format 5 preserves counters, samples, and active pursuit tracking. Older saves begin tracking at load time without reconstructing lost history.
 
 Ecosystem balancing: see BALANCE.md for the 20-minute before/after runs, limits, and reproduction commands. Gameplay resource rates and urgency thresholds are centralized in src/balance.ts. The tuning fixes repeated interruption of vital actions, searches trapped at map edges, excessive shoreline detours, and hunger overridden by social regrouping. No hunger/thirst deaths occurred in the three tested moderate mixed reserves or the deer-only control; predator-heavy reserves can still lose animals to food scarcity. Those reports predate reproduction; see REPRODUCTION.md for the subsequent family-behavior runs and their limits.
+
+Woodland scenery: the playable reserve uses cached textured ground, layered oak and pine crowns, mossy riverbank stones, ferns, wildflowers, crossing approaches, dappled light, and root-framed dens. Trees sort by their ground position against animals and fade near the selected animal. Water highlights update at 8 Hz in simulation time and freeze when paused. Scenery uses coordinate noise independent of the world RNG; food depletion redraws only forage. This is the first procedural scenery pass toward the woodland concept; animals retain their existing sprites.
+
+Deer appearance: rounded woodland silhouettes, shaded coats, slender jointed legs, pale bellies and tails, branching buck antlers, antlerless does, and spotted juvenile coats now share anatomy across all existing movement, feeding, awareness, family, sleep, and carcass poses. Juveniles use their existing growth scale and switch to adult coats at maturity. Texture frames are generated once at scene creation.
+
+Deer visual refinement: textures are generated at 3x resolution and displayed at their original world size. Rounded stroke segments prevent folded-joint spikes. To inspect the same drawing commands offline on Windows, run npx tsx scripts/deer-preview.ts followed by ./scripts/deer-preview.ps1; the contact sheet is written under ignored performance-results. This GDI preview is a geometry reference, not a Phaser browser screenshot.

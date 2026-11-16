@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
-    "test": "tsx --test src/sim.test.ts src/lifecycle.test.ts src/reproduction.test.ts src/familyAnimations.test.ts src/terrain.test.ts src/homes.test.ts",
+    "test": "tsx --test src/sim.test.ts src/lifecycle.test.ts src/reproduction.test.ts src/familyAnimations.test.ts src/terrain.test.ts src/homes.test.ts src/woodlandRendering.test.ts",
     "balance": "tsx scripts/balance.ts",
     "perf:sim": "tsx scripts/performance.ts",
     "perf:render": "tsx scripts/render-performance.ts",
@@ -22,6 +24,7 @@
     "typescript": "^5.7.0",
     "vite": "^6.0.0",
     "tsx": "^4.19.0",
-    "@types/node": "^22.0.0"
+    "@types/node": "^22.0.0",
+    "prettier": "3.7.4"
   }
 }

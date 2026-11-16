@@ -4,12 +4,12 @@ This is the first part of giving animals a relationship with places: cover, cros
 
 ## Terrain rules
 
-| Ground | Movement and detection |
-| --- | --- |
-| Open grass | Fast movement and little concealment |
+| Ground        | Movement and detection                                                             |
+| ------------- | ---------------------------------------------------------------------------------- |
+| Open grass    | Fast movement and little concealment                                               |
 | Woodland edge | Adjacent trees provide cover and slow movement; trees themselves remain impassable |
-| River ford | Walkable stepping stones, crossed at reduced speed |
-| Deep water | Impassable, but does not block sight |
+| River ford    | Walkable stepping stones, crossed at reduced speed                                 |
+| Deep water    | Impassable, but does not block sight                                               |
 
 Cover is derived from surrounding trees and capped at 60%. It reduces animal detection distance by up to 33%; moving animals conceal less, and close encounters still reveal animals when the sight line is clear. Solid trees block sight. Resource discovery continues to use nominal perception distance, and the player can still see animals in cover.
 
@@ -17,7 +17,7 @@ At maximum cover, woodland movement factors are 94% for deer, 88% for wolves, an
 
 ## Routes and pursuits
 
-Ordinary routes now use deterministic A* with terrain travel-time costs, so a slightly longer route over fast ground can beat a slow crossing. Water and tree cells remain excluded. Routes align to tile centers when necessary to avoid clipping corners.
+Ordinary routes now use deterministic A\* with terrain travel-time costs, so a slightly longer route over fast ground can beat a slow crossing. Water and tree cells remain excluded. Routes align to tile centers when necessary to avoid clipping corners.
 
 Seeing prey no longer permits straight-line movement through water. Hunters pursue directly only along a walkable segment; otherwise they route around obstacles and through available fords. Detour routes refresh when the target changes tile or after 0.75 simulated seconds, rather than recomputing an entire route every step. Hidden prey are pursued using their last remembered position. Unreachable food hunts are rejected or abandoned, and melee still requires a clear walkable segment.
 
@@ -35,10 +35,10 @@ All 106 tests and the production build pass. Coverage includes sight across wate
 
 Two 1,200-second diagnostic reserves ran with normal resources, needs, perception, and reproduction:
 
-| Scenario | Initial deer/wolves/bears | Births | Final living deer/wolves/bears | Deaths |
-| --- | --- | --- | --- | --- |
-| Mixed, seed 4721 | 24 / 3 / 2 | 25 deer, 3 wolves | 34 / 6 / 2 | 9 deer predation, 6 deer thirst |
-| Deer-only, seed 44 | 20 / 0 / 0 | 33 deer | 51 / 0 / 0 | 2 deer thirst |
+| Scenario           | Initial deer/wolves/bears | Births            | Final living deer/wolves/bears | Deaths                          |
+| ------------------ | ------------------------- | ----------------- | ------------------------------ | ------------------------------- |
+| Mixed, seed 4721   | 24 / 3 / 2                | 25 deer, 3 wolves | 34 / 6 / 2                     | 9 deer predation, 6 deer thirst |
+| Deer-only, seed 44 | 20 / 0 / 0                | 33 deer           | 51 / 0 / 0                     | 2 deer thirst                   |
 
 These are navigation and survival diagnostics, not a claim of ecosystem equilibrium. The mixed run retained 25 living offspring, including two dependent orphans. Water discovery and long-run population balance still need tuning; no water, food, or replacement animals were supplied by the harness after initialization. Reports are in `balance-results/terrain-*.json`.
 

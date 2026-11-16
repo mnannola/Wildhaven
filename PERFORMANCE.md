@@ -7,10 +7,10 @@ Measured on this Windows host with Node v22.20.0. These are CPU timings, not a p
 The same seeded worlds were measured before and after optimization: seed 4721, approximately 85% deer, 10% wolves, and 5% bears, spread across the map. Each run warms up for 20 steps, then measures 120 steps of 0.1 simulated seconds. Population counts are initial counts; normal predation remains enabled.
 
 | Initial animals | Before mean step | After mean step | Before p95 | After p95 | Speedup |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| 50 | 6.38 ms | 2.19 ms | 23.77 ms | 3.92 ms | 2.9x |
-| 100 | 11.98 ms | 3.82 ms | 37.55 ms | 6.05 ms | 3.1x |
-| 200 | 34.96 ms | 10.28 ms | 65.08 ms | 14.69 ms | 3.4x |
+| --------------- | ---------------: | --------------: | ---------: | --------: | ------: |
+| 50              |          6.38 ms |         2.19 ms |   23.77 ms |   3.92 ms |    2.9x |
+| 100             |         11.98 ms |         3.82 ms |   37.55 ms |   6.05 ms |    3.1x |
+| 200             |         34.96 ms |        10.28 ms |   65.08 ms |  14.69 ms |    3.4x |
 
 Sources: `baseline-clean.json` and `final.json`. Serialized final-world SHA-256 checksums matched the original at every population size when this optimization was measured, including animal behavior, resources, statistics, and memories. These reports predate aging and use save format 5. The benchmark checks matching 120-step spread runs only when save versions agree; it explicitly skips historical hash comparisons across different save versions.
 

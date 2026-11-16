@@ -2,11 +2,11 @@
 
 Animals can establish familiar home sites after discovering nearby food and water. New reserves still start empty. Sites use existing terrain, do not create resources, and do not block movement.
 
-| Species | Shared place | Range | Behavior |
-| --- | --- | ---: | --- |
-| Wolves | One den per pack | 12 tiles | Return, rest, patrol, scent-mark, guard the core, and raise pups |
-| Bears | One den per adult/family | 10 tiles | Return, rest, patrol, mark, and warn nearby rivals |
-| Deer | One gathering area per herd | 8 tiles | Return and rest together; gathering areas are not defended |
+| Species | Shared place                |    Range | Behavior                                                         |
+| ------- | --------------------------- | -------: | ---------------------------------------------------------------- |
+| Wolves  | One den per pack            | 12 tiles | Return, rest, patrol, scent-mark, guard the core, and raise pups |
+| Bears   | One den per adult/family    | 10 tiles | Return, rest, patrol, mark, and warn nearby rivals               |
+| Deer    | One gathering area per herd |  8 tiles | Return and rest together; gathering areas are not defended       |
 
 ## Finding and using a home
 
@@ -42,11 +42,11 @@ Validation covers establishment for every species, survival priorities, pack/her
 
 All 123 tests and the production build pass. The instrumented renderer checks marker caching, home selection/ranges, marking/guard poses, and den-pup resting animations, alongside existing sprite and family checks. Three reserves ran for 1,200 simulated seconds with natural resources and needs; each final save round-tripped exactly:
 
-| Scenario | Initial deer/wolves/bears | Final deer/wolves/bears | Active gathering areas / wolf dens / bear dens | Losses |
-| --- | --- | --- | --- | --- |
-| Mixed, seed 4721 | 24 / 3 / 2 | 35 / 2 / 2 | 2 / 1 / 2 | 6 deer predation, 1 wolf hunger |
-| Mixed, seed 44 | 24 / 3 / 2 | 63 / 0 / 3 | 2 / 0 / 2 | 3 wolves hunger |
-| Deer-only, seed 44 | 20 / 0 / 0 | 50 / 0 / 0 | 3 / 0 / 0 | 1 deer thirst |
+| Scenario           | Initial deer/wolves/bears | Final deer/wolves/bears | Active gathering areas / wolf dens / bear dens | Losses                          |
+| ------------------ | ------------------------- | ----------------------- | ---------------------------------------------- | ------------------------------- |
+| Mixed, seed 4721   | 24 / 3 / 2                | 35 / 2 / 2              | 2 / 1 / 2                                      | 6 deer predation, 1 wolf hunger |
+| Mixed, seed 44     | 24 / 3 / 2                | 63 / 0 / 3              | 2 / 0 / 2                                      | 3 wolves hunger                 |
+| Deer-only, seed 44 | 20 / 0 / 0                | 50 / 0 / 0              | 3 / 0 / 0                                      | 1 deer thirst                   |
 
 These runs confirm naturally established homes and family persistence, not population equilibrium. Wolf hunting/food balance still needs work: all three wolves starved in one seed. Wolf births and den-pup routines are covered by focused behavior tests; these particular mixed runs had no wolf births. A bear cub was born in the seed-44 mixed reserve.
 

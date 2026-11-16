@@ -6,20 +6,20 @@ Validation uses the real simulation at 0.1-second steps, without revealing resou
 
 Mixed reserves start with 24 deer, 3 wolves, and 2 bears. Deer-only reserves start with 20 deer.
 
-| Scenario | Seed | Before: survivors (deer/wolves/bears) | After: survivors | Before: thirst deaths | After: thirst deaths |
-| --- | --- | --- | --- | --- | --- |
-| Mixed | 4721 | 15 / 3 / 2 | 14 / 3 / 2 | 3 | 0 |
-| Mixed | 44 | 10 / 3 / 2 | 14 / 3 / 2 | 8 | 0 |
-| Deer only | 4721 | 20 / 0 / 0 | 20 / 0 / 0 | 0 | 0 |
+| Scenario  | Seed | Before: survivors (deer/wolves/bears) | After: survivors | Before: thirst deaths | After: thirst deaths |
+| --------- | ---- | ------------------------------------- | ---------------- | --------------------- | -------------------- |
+| Mixed     | 4721 | 15 / 3 / 2                            | 14 / 3 / 2       | 3                     | 0                    |
+| Mixed     | 44   | 10 / 3 / 2                            | 14 / 3 / 2       | 8                     | 0                    |
+| Deer only | 4721 | 20 / 0 / 0                            | 20 / 0 / 0       | 0                     | 0                    |
 
 All deaths in the two tuned mixed runs were predation, with no hunger deaths. Wolves still needed to hunt: the two runs killed 10 deer each. Bears caught 34 and 32 fish. Grass finished at 98–99% of capacity; fish at 92–96%. This is a modest population, not a carrying-capacity test.
 
 ## Additional validation
 
-| Scenario | Seed | Initial population | Survivors | Hunger deaths | Thirst deaths |
-| --- | --- | --- | --- | --- | --- |
-| Mixed, additional seed | 101 | 24 / 3 / 2 | 11 / 3 / 2 | 0 | 0 |
-| Predator-heavy | 4721 | 12 / 6 / 2 | 4 / 4 / 2 | 2 wolves | 0 |
+| Scenario               | Seed | Initial population | Survivors  | Hunger deaths | Thirst deaths |
+| ---------------------- | ---- | ------------------ | ---------- | ------------- | ------------- |
+| Mixed, additional seed | 101  | 24 / 3 / 2         | 11 / 3 / 2 | 0             | 0             |
+| Predator-heavy         | 4721 | 12 / 6 / 2         | 4 / 4 / 2  | 2 wolves      | 0             |
 
 The crowded run deliberately has too few deer for six wolves. Scarcity and predator losses remain possible. This tuning does not promise that every population mix survives.
 
